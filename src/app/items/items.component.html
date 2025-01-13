@@ -1,1 +1,84 @@
-<h1>Items</h1>
+<!-- inventory-list.component.html -->
+<div class="inventory-container">
+    <div class="header">
+        <h2>All Items</h2>
+        <p class="subtitle">Items detail Information</p>
+    </div>
+
+    <div class="actions-bar">
+        <div class="search-container">
+            <i class="fal fa-search search-icon"></i>
+            <input type="text" placeholder="Search Item" class="search-input">
+        </div>
+
+        <div class="button-group">
+            <button class="btn import-btn">
+                <i class="fal fa-file-import"></i>
+                Import File
+            </button>
+            <button class="btn add-btn">
+                <i class="fal fa-plus"></i>
+                Add Item
+            </button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>ID</th>
+                    <th>Brand Name</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Inventory Value</th>
+                    <th>Product Sold</th>
+                    <th>Sales Value</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of items">
+                    <td><input type="checkbox"></td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.brandName}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.quantity}} pcs</td>
+                    <td>${{item.price}}</td>
+                    <td>${{item.inventoryValue}}</td>
+                    <td>${{item.productSold}}</td>
+                    <td>${{item.salesValue}}</td>
+                    <td class="actions-cell">
+                        <button class="action-btn modify-btn" (click)="onModify(item)">
+                            <i class="fal fa-pencil"></i>
+                        </button>
+                        <button class="action-btn delete-btn" (click)="onDelete(item)">
+                            <i class="fal fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="items-per-page">
+            Showing
+            <select>
+                <option>01</option>
+                <option>05</option>
+                <option>10</option>
+            </select>
+        </span>
+        <div class="page-controls">
+            <button class="page-btn prev">❮</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn next">❯</button>
+        </div>
+    </div>
+</div>

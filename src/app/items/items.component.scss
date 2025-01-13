@@ -1,0 +1,174 @@
+/* inventory-list.component.scss */
+.inventory-container {
+    padding: 20px;
+    background: #fff;
+
+    .header {
+        margin-bottom: 24px;
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+    }
+
+    .actions-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+
+        .search-container {
+            position: relative;
+            flex: 0 0 300px;
+
+            .search-icon {
+                position: absolute;
+                left: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #666;
+            }
+
+            .search-input {
+                width: 100%;
+                padding: 8px 8px 8px 40px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+
+                &::placeholder {
+                    color: #999;
+                }
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+
+            .btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 16px;
+                border-radius: 4px;
+                border: none;
+                font-size: 14px;
+                cursor: pointer;
+
+                &.import-btn {
+                    background-color: #f5f5f5;
+                    color: #333;
+                }
+
+                &.add-btn {
+                    background-color: #333;
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .table-container {
+        margin-bottom: 24px;
+        overflow-x: auto;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th,
+            td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #eee;
+            }
+
+            th {
+                background-color: #f9f9f9;
+                font-weight: 600;
+            }
+
+            .actions-cell {
+                display: flex;
+                gap: 8px;
+
+                .action-btn {
+                    padding: 6px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &.modify-btn {
+                        background-color: #f0f7ff;
+                        color: #0066cc;
+
+                        &:hover {
+                            background-color: #e0f0ff;
+                        }
+                    }
+
+                    &.delete-btn {
+                        background-color: #fff0f0;
+                        color: #cc0000;
+
+                        &:hover {
+                            background-color: #ffe0e0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            select {
+                padding: 4px 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+        }
+
+        .page-controls {
+            display: flex;
+            gap: 4px;
+
+            .page-btn {
+                padding: 6px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background: white;
+                cursor: pointer;
+
+                &.active {
+                    background-color: #333;
+                    color: white;
+                    border-color: #333;
+                }
+
+                &:hover:not(.active) {
+                    background-color: #f5f5f5;
+                }
+            }
+        }
+    }
+}
