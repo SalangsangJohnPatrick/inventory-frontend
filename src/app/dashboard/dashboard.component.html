@@ -1,1 +1,67 @@
-<h1>Dashboard</h1>
+<div class="inventory-container">
+    <!-- Header Section -->
+    <header class="dashboard-header">
+        <h1>Inventory Management Dashboard</h1>
+        <p class="dashboard-subtitle">An overview of your inventory, sales, and stock levels.</p>
+    </header>
+
+    <!-- Summary Section -->
+    <section class="summary-section">
+        <div class="summary-cards">
+            <!-- Item Summary -->
+            <div class="summary-card">
+                <h3>Item Summary</h3>
+                <div class="metrics">
+                    <div class="metric">
+                        <span class="value">868</span>
+                        <span class="label">Quantity on Hand</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">200</span>
+                        <span class="label">Inventory Value</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Overview -->
+            <div class="summary-card">
+                <h3>Sales Overview</h3>
+                <div class="metrics">
+                    <div class="metric">
+                        <span class="value">21</span>
+                        <span class="label">Total Sale Items</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">21</span>
+                        <span class="label">Total Sale Value</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Section with Top Selling Products and Low Stock Alerts -->
+    <section class="bottom-section">
+        <div class="top-selling-products">
+            <h3>Top Selling Products</h3>
+            <ul class="product-list">
+                <li *ngFor="let product of topSellingProducts">
+                    <span class="product-name">{{ product.name }}</span>
+                    <span class="sold-quantity">{{ product.quantity }} units sold</span>
+                    <span class="sold-value">{{ product.saleValue | currency }}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="low-stock-alerts">
+            <h3>Low Stock Alerts</h3>
+            <ul class="alert-list">
+                <li *ngFor="let item of lowStockItems" class="alert-item">
+                    <span class="product-name">{{ item.name }}</span>
+                    <span class="current-stock">{{ item.currentStock }} units remaining</span>
+                    <span class="threshold">Threshold: {{ item.threshold }} units</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
