@@ -42,13 +42,13 @@
                 <tr *ngFor="let item of items">
                     <td><input type="checkbox"></td>
                     <td>{{item.id}}</td>
-                    <td>{{item.brandName}}</td>
+                    <td>{{item.brand_name}}</td>
                     <td>{{item.type}}</td>
-                    <td>{{item.quantity}} pcs</td>
-                    <td>${{item.price}}</td>
-                    <td>${{item.inventoryValue}}</td>
-                    <td>${{item.productSold}}</td>
-                    <td>${{item.salesValue}}</td>
+                    <td>{{item.quantity_on_hand}} pcs</td>
+                    <td>{{item.price | currency}}</td>
+                    <td>{{item.inventory_value | currency}}</td>
+                    <td>{{item.products_sold}}</td>
+                    <td>{{item.sales_value | currency}}</td>
                     <td class="actions-cell">
                         <button class="action-btn modify-btn" (click)="onModify(item)">
                             <i class="fal fa-pencil"></i>
