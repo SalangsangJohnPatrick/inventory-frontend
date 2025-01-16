@@ -1,6 +1,6 @@
 <div class="inventory-container">
     <div class="header">
-        <h2>All Items</h2>
+        <h1>All Items</h1>
         <p class="subtitle">Items detail Information</p>
     </div>
 
@@ -23,10 +23,10 @@
     </div>
 
     <div class="table-container">
-        <table>
+        <table *ngIf="items.length > 0">
             <thead>
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <!-- <th><input type="checkbox"></th> -->
                     <th>ID</th>
                     <th>Brand Name</th>
                     <th>Type</th>
@@ -40,7 +40,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of items">
-                    <td><input type="checkbox"></td>
+                    <!-- <td><input type="checkbox"></td> -->
                     <td>{{item.id}}</td>
                     <td>{{item.brand_name}}</td>
                     <td>{{item.type}}</td>
@@ -60,6 +60,10 @@
                 </tr>
             </tbody>
         </table>
+        <div *ngIf="items.length === 0" class="no-items-message">
+            <i class="fal fa-inbox"></i>
+            <p>No items found</p>
+        </div>
     </div>
 
     <div class="pagination">

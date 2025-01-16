@@ -7,9 +7,10 @@
         margin-bottom: 24px;
 
         h1 {
+            color: #333;
             font-size: 24px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin: 0;
         }
 
         .subtitle {
@@ -64,13 +65,13 @@
                 cursor: pointer;
 
                 &.import-btn {
-                    background-color: #f5f5f5;
-                    color: #333;
+                    background-color: #333;
+                    color: #f5f5f5;
                 }
 
                 &.add-btn {
                     background-color: #333;
-                    color: white;
+                    color: #f5f5f5;
                 }
             }
         }
@@ -79,6 +80,28 @@
     .table-container {
         margin-bottom: 24px;
         overflow-x: auto;
+
+        .no-items-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 0;
+            background: #FFFFFF;
+            border-radius: 4px;
+
+            i {
+                font-size: 32px;
+                color: #999;
+                margin-bottom: 12px;
+            }
+
+            p {
+                color: #666;
+                font-size: 16px;
+                margin: 0;
+            }
+        }
 
         table {
             width: 100%;

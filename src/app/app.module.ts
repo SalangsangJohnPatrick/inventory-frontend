@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ItemsComponent } from './items/items.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

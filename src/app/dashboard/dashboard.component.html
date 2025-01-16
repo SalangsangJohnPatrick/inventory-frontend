@@ -7,38 +7,57 @@
 
     <!-- Summary Section -->
     <section class="summary-section">
-        <div class="summary-cards">
+        <div class="inventory-type-selector">
+            <label for="inventoryType">Select Inventory Type:</label>
+            <select id="inventoryType" [(ngModel)]="inventoryType" (change)="onInventoryTypeChange(inventoryType)">
+                <option value="mouse">Mouse</option>
+                <option value="keyboard">Keyboard</option>
+                <option value="headset">Headset</option>
+                <option value="monitor">Monitor</option>
+                <option value="speaker">Speaker</option>
+            </select>
+        </div>
+
+        <div *ngIf="items.length === 0" class="no-items-message">
+            <i class="fal fa-box-empty"></i>
+            <p>No inventory items found for {{ inventoryType | titlecase }}</p>
+            <span class="suggestion">Try selecting a different inventory type</span>
+        </div>
+
+        <!-- Display summary cards if there are items -->
+        <div *ngIf="items.length > 0" class="summary-cards">
             <!-- Item Summary -->
-            <div class="summary-card">
-                <h3>Item Summary</h3>
+            <div *ngFor="let item of items" class="summary-card">
+                <h3>Item Summary for {{ item.type | uppercase }}</h3>
                 <div class="metrics">
                     <div class="metric">
-                        <span class="value">868</span>
+                        <span class="value">{{ item.totalQuantity }}</span>
                         <span class="label">Quantity on Hand</span>
                     </div>
                     <div class="metric">
-                        <span class="value">200</span>
+                        <span class="value">{{ item.totalInventoryValue | currency }}</span>
                         <span class="label">Inventory Value</span>
                     </div>
                 </div>
             </div>
 
             <!-- Sales Overview -->
-            <div class="summary-card">
-                <h3>Sales Overview</h3>
+            <div *ngFor="let item of items" class="summary-card">
+                <h3>Sales Overview for {{ item.type | uppercase }}</h3>
                 <div class="metrics">
                     <div class="metric">
-                        <span class="value">21</span>
-                        <span class="label">Total Sale Items</span>
+                        <span class="value">{{ item.totalProductsSold }}</span>
+                        <span class="label">Total Sold Items</span>
                     </div>
                     <div class="metric">
-                        <span class="value">21</span>
+                        <span class="value">{{ item.totalSalesValue | currency }}</span>
                         <span class="label">Total Sale Value</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- Bottom Section with Top Selling Products and Low Stock Alerts -->
     <section class="bottom-section">

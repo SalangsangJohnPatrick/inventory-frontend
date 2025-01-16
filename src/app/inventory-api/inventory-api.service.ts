@@ -12,4 +12,8 @@ export class InventoryApiService {
   getInventoryItems(): Observable<any> {
     return this.http.get<any>('http://localhost:8000/GetAllInventoryItems');
   }
+
+  getValuationReportByType(type: string): Observable<any> {
+    return this.http.get<any>(`http://localhost:8000/InventoryValuationReport/${type}`);
+  }
 }
