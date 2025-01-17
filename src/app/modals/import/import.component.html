@@ -1,0 +1,33 @@
+<div class="modal-overlay" [class.active]="isOpen" (click)="onOverlayClick($event)">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Import Items</h2>
+            <button class="close-btn" (click)="close()">
+                <i class="fal fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-content">
+            <div class="import-container">
+                <div class="file-upload" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                    (drop)="onDrop($event)">
+                    <input type="file" id="fileUpload" (change)="onFileSelected($event)" accept=".csv,.xlsx">
+                    <label for="fileUpload" class="file-upload-label">
+                        <i class="fal fa-cloud-upload"></i>
+                        <span>Click to upload or drag and drop</span>
+                        <span class="file-type">CSV or Excel files</span>
+                        <span *ngIf="selectedFile" class="selected-file">
+                            Selected: {{ selectedFile.name }}
+                        </span>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn cancel-btn" (click)="close()">Cancel</button>
+                    <button type="button" class="btn submit-btn" [disabled]="!selectedFile" (click)="onImport()">
+                        Import
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

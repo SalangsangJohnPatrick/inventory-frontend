@@ -8,7 +8,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ItemsComponent } from './items/items.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddItemComponent } from './modals/add-item/add-item.component';
+import { ImportComponent } from './modals/import/import.component';
+import { ModalsComponent } from './modals/modals.component';
 
 @NgModule({
   declarations: [
@@ -16,13 +19,17 @@ import { FormsModule } from '@angular/forms';
     BodyComponent,
     DashboardComponent,
     SidebarComponent,
-    ItemsComponent
+    ItemsComponent,
+    AddItemComponent,
+    ImportComponent,
+    ModalsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

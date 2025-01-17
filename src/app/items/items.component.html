@@ -11,13 +11,11 @@
         </div>
 
         <div class="button-group">
-            <button class="btn import-btn">
-                <i class="fal fa-file-import"></i>
-                Import File
+            <button (click)="onImportClick()" class="btn import-btn">
+                <i class="fal fa-file-import"></i> Import File
             </button>
-            <button class="btn add-btn">
-                <i class="fal fa-plus"></i>
-                Add Item
+            <button (click)="onAddClick()" class="btn add-btn">
+                <i class="fal fa-plus"></i> Add Item
             </button>
         </div>
     </div>
@@ -76,12 +74,20 @@
             </select>
         </span>
         <div class="page-controls">
-            <button class="page-btn prev">❮</button>
+            <button class="page-btn fal fa-chevron-left"></button>
             <button class="page-btn active">1</button>
             <button class="page-btn">2</button>
             <button class="page-btn">3</button>
             <button class="page-btn">4</button>
-            <button class="page-btn next">❯</button>
+            <button class="page-btn fal fa-chevron-right"></button>
         </div>
     </div>
+
+    <app-modals
+        [showAddModal]="showAddModal" 
+        (closeAddModal)="closeAddModal()"
+        [showImportModal]="showImportModal" 
+        (closeImportModal)="closeImportModal()">
+    </app-modals>
+
 </div>

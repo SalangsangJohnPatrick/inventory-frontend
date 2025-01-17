@@ -1,0 +1,11 @@
+<app-add-item 
+    *ngIf="showAddModal" 
+    [isOpen]="showAddModal" 
+    (closeModal)="closeAddModalHandler()">
+</app-add-item>
+
+<app-import 
+    *ngIf="showImportModal" 
+    [isOpen]="showImportModal" 
+    (closeModal)="closeImportModalHandler()">
+</app-import>
