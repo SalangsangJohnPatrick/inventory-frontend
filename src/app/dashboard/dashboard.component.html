@@ -17,7 +17,7 @@
         </div>
 
         <div *ngIf="items.length === 0" class="no-items-message">
-            <i class="fal fa-box-empty"></i>
+            <i class="fal fa-inbox"></i>
             <p>No valuation report found for {{ inventoryType | titlecase }}</p>
             <span class="suggestion">Try selecting a different inventory type</span>
         </div>
@@ -61,23 +61,34 @@
         <div class="top-selling-products">
             <h3>Top Selling Products</h3>
             <ul class="product-list">
-                <li *ngFor="let product of topSellingProducts">
-                    <span class="product-name">{{ product.name }}</span>
-                    <span class="sold-quantity">{{ product.quantity }} units sold</span>
-                    <span class="sold-value">{{ product.saleValue | currency }}</span>
+                <li *ngFor="let product of topProducts">
+                    <span class="product-name">{{ product.brand_name }}</span>
+                    <span class="sold-quantity">{{ product.products_sold }} units sold</span>
+                    <span class="sold-value">{{ product.sales_value | currency }}</span>
                 </li>
             </ul>
+            <div *ngIf="topProducts.length === 0" class="no-items-message">
+                <i class="fal fa-inbox"></i>
+                <p>No top-selling products found</p>
+            </div>
         </div>
 
         <div class="low-stock-alerts">
-            <h3>Low Stock Alerts</h3>
+            <div class="low-stock-header">
+                <h3>Low Stock Alerts</h3>
+                <span class="threshold">Threshold: {{ threshold }} units</span>
+            </div>
             <ul class="alert-list">
                 <li *ngFor="let item of lowStockItems" class="alert-item">
-                    <span class="product-name">{{ item.name }}</span>
-                    <span class="current-stock">{{ item.currentStock }} units remaining</span>
-                    <span class="threshold">Threshold: {{ item.threshold }} units</span>
+                    <span class="product-name">{{ item.brand_name }}</span>
+                    <span class="product-type">{{ item.type }}</span>
+                    <span class="current-stock">{{ item.quantity_on_hand }} units remaining</span>
                 </li>
             </ul>
+            <div *ngIf="lowStockItems.length === 0" class="no-items-message">
+                <i class="fal fa-inbox"></i>
+                <p>No top-selling products found</p>
+            </div>
         </div>
     </section>
 </div>

@@ -32,5 +32,12 @@ export class InventoryApiService {
   updateInventoryItem(id: number, updatedItem: any): Observable<any> {
     return this.http.put<any>(`http://localhost:8000/UpdateInventoryItem/${id}`, updatedItem);
   }
-  
+
+  getTopSellingProducts(): Observable<any> {
+    return this.http.get<any>('http://localhost:8000/GetTopSellingProducts');
+  }
+
+  getLowStockItems(): Observable<any> {
+    return this.http.get<any>('http://localhost:8000/GetLowStockItems');
+  }
 }

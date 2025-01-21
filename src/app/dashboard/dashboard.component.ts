@@ -9,16 +9,16 @@ interface InventoryItem {
   totalSalesValue: number;
 }
 
-interface Product {
-  name: string;
-  quantity: number;
-  saleValue: number;
+interface TopProducts {
+  brand_name: string;
+  products_sold: number;
+  sales_value: number;
 }
 
-interface LowStockItem {
-  name: string;
-  currentStock: number;
-  threshold: number;
+interface LowStock {
+  brand_name: string;
+  type: string;
+  quantity_on_hand: number;
 }
 
 @Component({
@@ -29,12 +29,18 @@ interface LowStockItem {
 export class DashboardComponent implements OnInit {
 
   items: InventoryItem[] = [];
+  topProducts: TopProducts[] = [];
+  lowStockItems: LowStock[] = [];
+
+  threshold: number = 0;
   inventoryType: string = 'mouse';
 
-  constructor(private inventoryApiService: InventoryApiService) {}
+  constructor(private inventoryApiService: InventoryApiService) { }
 
   ngOnInit(): void {
     this.getInventoryValuationReport();
+    this.getTopSellingProducts();
+    this.getLowStockItems();
   }
 
   // Method to fetch the inventory valuation report based on the selected type
@@ -55,17 +61,33 @@ export class DashboardComponent implements OnInit {
     this.getInventoryValuationReport(); // Fetch the data for the new type
   }
 
-  // Top Selling Products
-  topSellingProducts: Product[] = [
-    { name: 'Keyboard', quantity: 50, saleValue: 1200 },
-    { name: 'Mouse', quantity: 30, saleValue: 800 },
-    // Add more products as needed
-  ];
+  // Fetch top-selling products from API
+  getTopSellingProducts() {
+    this.inventoryApiService.getTopSellingProducts()
+      .subscribe((data: any) => {
+        console.log('Top-selling products:', data);
+        this.topProducts = Array.isArray(data) ? data : [];
+      }, error => {
+        console.error('Error fetching top-selling products:', error);
+        this.topProducts = [];
+      });
+  }
 
-  // Low Stock Alerts
-  lowStockItems: LowStockItem[] = [
-    { name: 'Keyboard', currentStock: 2, threshold: 5 },
-    { name: 'Mouse', currentStock: 1, threshold: 3 },
-    // Add more items as needed
-  ];
+  // Fetch low-stock items from API
+  getLowStockItems() {
+    this.inventoryApiService.getLowStockItems()
+      .subscribe((data: any) => {
+        console.log('Low-stock items:', data);
+
+        // Extract lowStockItems from the response
+        this.lowStockItems = data.lowStockItems || []; // Safely extract lowStockItems if present
+        this.threshold = data.threshold;
+
+      }, error => {
+        console.error('Error fetching low-stock items:', error);
+        this.lowStockItems = [];
+        this.threshold = 0;
+      });
+  }
+
 }

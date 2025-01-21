@@ -156,6 +156,33 @@
             font-weight: 500;
             margin: 0 0 16px 0;
         }
+
+        .no-items-message {
+            background-color: white;
+            border-radius: 8px;
+            padding: 48px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-self: center;
+            gap: 12px;
+            width: 50%;
+
+            i {
+                font-size: 32px;
+                color: #999;
+            }
+
+            p {
+                font-size: 18px;
+                color: #333;
+                font-weight: 500;
+                margin: 0;
+            }
+        }
     }
 
     .top-selling-products {
@@ -189,6 +216,18 @@
     }
 
     .low-stock-alerts {
+
+        .low-stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .threshold {
+                font-weight: 600;
+                color: #e53935;
+            }
+        }
+
         .alert-list {
             list-style: none;
             padding: 0;
@@ -199,7 +238,8 @@
                 padding: 8px 0;
                 border-bottom: 1px solid #eee;
 
-                .product-name {
+                .product-name,
+                .product-type {
                     font-size: 14px;
                     color: #333;
                     font-weight: 500;
@@ -209,11 +249,6 @@
                 .threshold {
                     font-size: 14px;
                     color: #666;
-                }
-
-                .threshold {
-                    font-weight: 600;
-                    color: #e53935; // Alert color
                 }
             }
         }
