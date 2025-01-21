@@ -64,15 +64,17 @@
                 font-size: 14px;
                 cursor: pointer;
 
-                &.import-btn {
-                    background-color: #333;
-                    color: #f5f5f5;
-                }
-
+                &.import-btn,
                 &.add-btn {
                     background-color: #333;
                     color: #f5f5f5;
                 }
+
+                &.import-btn:hover,
+                &.add-btn:hover {
+                    background-color: #444;
+                }
+
             }
         }
     }

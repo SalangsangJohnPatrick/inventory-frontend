@@ -58,8 +58,11 @@ export class ImportComponent {
 
   onImport(): void {
     if (this.selectedFile) {
+      // console.log(this.selectedFile);
       this.importFile.emit(this.selectedFile);
       this.close();
+    } else {
+      alert('Please select a file to import.');
     }
   }
 }

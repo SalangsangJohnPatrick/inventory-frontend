@@ -1,11 +1,9 @@
 <div class="inventory-container">
-    <!-- Header Section -->
     <header class="dashboard-header">
         <h1>Dashboard</h1>
-        <p class="dashboard-subtitle">An overview of your inventory, sales, and stock levels.</p>
+        <p class="dashboard-subtitle">An overview of inventory, sales, and stock levels.</p>
     </header>
 
-    <!-- Summary Section -->
     <section class="summary-section">
         <div class="inventory-type-selector">
             <label for="inventoryType">Select Inventory Type:</label>
@@ -24,9 +22,7 @@
             <span class="suggestion">Try selecting a different inventory type</span>
         </div>
 
-        <!-- Display summary cards if there are items -->
         <div *ngIf="items.length > 0" class="summary-cards">
-            <!-- Item Summary -->
             <div *ngFor="let item of items" class="summary-card">
                 <h3>Item Summary for {{ item.type | uppercase }}</h3>
                 <div class="metrics">
@@ -41,7 +37,6 @@
                 </div>
             </div>
 
-            <!-- Sales Overview -->
             <div *ngFor="let item of items" class="summary-card">
                 <h3>Sales Overview for {{ item.type | uppercase }}</h3>
                 <div class="metrics">
@@ -58,8 +53,10 @@
         </div>
     </section>
 
+    <header class="dashboard-header">
+        <p class="dashboard-subtitle">A comprehensive view of top-selling products and low stock alerts</p>
+    </header>
 
-    <!-- Bottom Section with Top Selling Products and Low Stock Alerts -->
     <section class="bottom-section">
         <div class="top-selling-products">
             <h3>Top Selling Products</h3>

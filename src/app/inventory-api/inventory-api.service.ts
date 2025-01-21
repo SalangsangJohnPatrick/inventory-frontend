@@ -24,4 +24,13 @@ export class InventoryApiService {
   importInventoryItems(formData: FormData): Observable<any> {
     return this.http.post<any>('http://localhost:8000/ImportInventoryItems', formData);
   }
+
+  deleteInventoryItem(id: number): Observable<any> {
+    return this.http.delete<any>(`http://localhost:8000/DeleteInventoryItem/${id}`);
+  }
+
+  updateInventoryItem(id: number, updatedItem: any): Observable<any> {
+    return this.http.put<any>(`http://localhost:8000/UpdateInventoryItem/${id}`, updatedItem);
+  }
+  
 }

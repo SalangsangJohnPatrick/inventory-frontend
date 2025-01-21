@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AddItemComponent {
   @Input() isOpen = false;
   @Output() closeModal = new EventEmitter<void>();
-  @Output() submitForm = new EventEmitter<any>();
+  @Output() addItem = new EventEmitter<any>();
 
   inventoryForm: FormGroup;
 
@@ -35,8 +35,9 @@ export class AddItemComponent {
   }
 
   onSubmit(): void {
+    // console.log(this.inventoryForm.value);
     if (this.inventoryForm.valid) {
-      this.submitForm.emit(this.inventoryForm.value);
+      this.addItem.emit(this.inventoryForm.value);
       this.close();
     }
   }

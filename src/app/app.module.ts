@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddItemComponent } from './modals/add-item/add-item.component';
 import { ImportComponent } from './modals/import/import.component';
 import { ModalsComponent } from './modals/modals.component';
+import { UpdateItemComponent } from './modals/update-item/update-item.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ModalsComponent } from './modals/modals.component';
     ItemsComponent,
     AddItemComponent,
     ImportComponent,
-    ModalsComponent
+    ModalsComponent,
+    UpdateItemComponent
   ],
   imports: [
     BrowserModule,

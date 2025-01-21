@@ -8,11 +8,18 @@ import { ImportComponent } from '../modals/import/import.component';
   styleUrls: ['./modals.component.scss']
 })
 export class ModalsComponent {
-  @Input() showAddModal = false;  // Input property for showing Add Modal
-  @Input() showImportModal = false;  // Input property for showing Import Modal
+  @Input() showAddModal = false;
+  @Input() showImportModal = false;
+  @Input() showUpdateModal = false;
+  @Input() selectedItem: any = null;
 
   @Output() closeAddModal = new EventEmitter<void>();
   @Output() closeImportModal = new EventEmitter<void>();
+  @Output() closeUpdateModal = new EventEmitter<void>();
+
+  @Output() addItem = new EventEmitter<any>();
+  @Output() importFile = new EventEmitter<File>();
+  @Output() updateItem = new EventEmitter<any>();
 
   openAddModal() {
     this.showAddModal = true;
@@ -28,5 +35,25 @@ export class ModalsComponent {
 
   closeImportModalHandler() {
     this.closeImportModal.emit();
+  }
+
+  openUpdateModal() {
+    this.showUpdateModal = true;
+  }
+
+  closeUpdateModalHandler() {
+    this.closeUpdateModal.emit();
+  }
+
+  onAddItem(item: any) {
+    this.addItem.emit(item);
+  }
+
+  onImportFile(file: File) {
+    this.importFile.emit(file);
+  }
+
+  onUpdateItem(item: any) {
+    this.updateItem.emit(item);
   }
 }

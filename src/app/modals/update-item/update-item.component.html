@@ -1,0 +1,69 @@
+<div class="modal-overlay" [class.active]="isOpen" (click)="onOverlayClick($event)">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Update Existing Item</h2>
+            <button class="close-btn" (click)="close()">
+                <i class="fal fa-times"></i>
+            </button>
+        </div>
+
+        <div class="modal-content">
+            <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="brand_name">Brand Name</label>
+                    <input id="brand_name" type="text" formControlName="brand_name"
+                        [class.error]="inventoryForm.get('brand_name')?.errors && inventoryForm.get('brand_name')?.touched">
+                    <span class="error-message"
+                        *ngIf="inventoryForm.get('brand_name')?.errors?.['required'] && inventoryForm.get('brand_name')?.touched">
+                        Brand name is required
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <input id="type" type="text" formControlName="type"
+                        [class.error]="inventoryForm.get('type')?.errors && inventoryForm.get('type')?.touched">
+                    <span class="error-message"
+                        *ngIf="inventoryForm.get('type')?.errors?.['required'] && inventoryForm.get('type')?.touched">
+                        Type is required
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity on Hand</label>
+                    <input id="quantity" type="number" formControlName="quantity_on_hand"
+                        [class.error]="inventoryForm.get('quantity_on_hand')?.errors && inventoryForm.get('quantity_on_hand')?.touched">
+                    <span class="error-message"
+                        *ngIf="inventoryForm.get('quantity_on_hand')?.errors?.['required'] && inventoryForm.get('quantity_on_hand')?.touched">
+                        Quantity is required
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input id="price" type="number" formControlName="price" step="0.01"
+                        [class.error]="inventoryForm.get('price')?.errors && inventoryForm.get('price')?.touched">
+                    <span class="error-message"
+                        *ngIf="inventoryForm.get('price')?.errors?.['required'] && inventoryForm.get('price')?.touched">
+                        Price is required
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="products_sold">Products Sold</label>
+                    <input id="products_sold" type="number" formControlName="products_sold"
+                        [class.error]="inventoryForm.get('products_sold')?.errors && inventoryForm.get('products_sold')?.touched">
+                    <span class="error-message"
+                        *ngIf="inventoryForm.get('products_sold')?.errors?.['required'] && inventoryForm.get('products_sold')?.touched">
+                        Products sold is required
+                    </span>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn cancel-btn" (click)="close()">Cancel</button>
+                    <button type="submit" class="btn submit-btn" [disabled]="!inventoryForm.valid">Update Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
