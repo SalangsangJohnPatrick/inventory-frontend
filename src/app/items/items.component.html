@@ -21,7 +21,7 @@
     </div>
 
     <div class="table-container">
-        <table *ngIf="paginatedInventories.length > 0">
+        <table *ngIf="!isLoadingInventories && paginatedInventories.length > 0">
             <thead>
                 <tr>
                     <!-- <th><input type="checkbox"></th> -->
@@ -59,9 +59,14 @@
             </tbody>
         </table>
 
-        <div *ngIf="paginatedInventories.length === 0" class="no-items-message">
-            <i class="fal fa-inbox"></i>
+        <div *ngIf="!isLoadingInventories && paginatedInventories.length === 0" class="no-items-message">
+            <i class="fal fa-dolly-empty"></i>
             <p>No inventories found</p>
+        </div>
+
+        <div *ngIf="isLoadingInventories" class="loading-inventories">
+            <i class="fal fa-spinner"></i>
+            <p>Loading all inventories from database</p>
         </div>
     </div>
 

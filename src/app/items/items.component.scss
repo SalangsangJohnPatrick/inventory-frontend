@@ -83,7 +83,8 @@
         margin-bottom: 24px;
         overflow-x: auto;
 
-        .no-items-message {
+        .no-items-message,
+        .loading-inventories {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -96,13 +97,14 @@
 
             i {
                 font-size: 32px;
-                color: #999;
+                color: #333;
                 margin-bottom: 12px;
             }
 
             p {
+                font-size: 18px;
                 color: #666;
-                font-size: 16px;
+                font-weight: 500;
                 margin: 0;
             }
         }

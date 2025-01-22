@@ -32,6 +32,10 @@ export class DashboardComponent implements OnInit {
   topProducts: TopProducts[] = [];
   lowStockItems: LowStock[] = [];
 
+  isLoadingValuation: boolean = true;
+  isLoadingTopProducts: boolean = true;
+  isLoadingLowStockItems: boolean = true;
+
   threshold: number = 0;
   inventoryType: string = 'mouse';
 
@@ -49,9 +53,11 @@ export class DashboardComponent implements OnInit {
       .subscribe((data: any) => {
         console.log(data);
         this.items = Array.isArray(data) ? data : [data];
+        this.isLoadingValuation = false;
       }, error => {
         console.error('Error fetching inventory data:', error);
         this.items = [];
+        this.isLoadingValuation = false;
       });
   }
 
@@ -67,9 +73,11 @@ export class DashboardComponent implements OnInit {
       .subscribe((data: any) => {
         console.log('Top-selling products:', data);
         this.topProducts = Array.isArray(data) ? data : [];
+        this.isLoadingTopProducts = false;
       }, error => {
         console.error('Error fetching top-selling products:', error);
         this.topProducts = [];
+        this.isLoadingTopProducts = false;
       });
   }
 
@@ -82,11 +90,13 @@ export class DashboardComponent implements OnInit {
         // Extract lowStockItems from the response
         this.lowStockItems = data.lowStockItems || []; // Safely extract lowStockItems if present
         this.threshold = data.threshold;
+        this.isLoadingLowStockItems = false;
 
       }, error => {
         console.error('Error fetching low-stock items:', error);
         this.lowStockItems = [];
         this.threshold = 0;
+        this.isLoadingLowStockItems = false;
       });
   }
 

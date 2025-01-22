@@ -16,13 +16,18 @@
             </select>
         </div>
 
-        <div *ngIf="items.length === 0" class="no-items-message">
-            <i class="fal fa-inbox"></i>
+        <div *ngIf="isLoadingValuation" class="loading-inventory-valuation">
+            <i class="fal fa-spinner"></i>
+            <p>Loading valuation report for {{ inventoryType | titlecase }}</p>
+        </div>
+
+        <div *ngIf="!isLoadingValuation && items.length === 0" class="no-items-message">
+            <i class="fal fa-dolly-empty"></i>
             <p>No valuation report found for {{ inventoryType | titlecase }}</p>
             <span class="suggestion">Try selecting a different inventory type</span>
         </div>
 
-        <div *ngIf="items.length > 0" class="summary-cards">
+        <div *ngIf="!isLoadingValuation && items.length > 0" class="summary-cards">
             <div *ngFor="let item of items" class="summary-card">
                 <h3>Item Summary for {{ item.type | uppercase }}</h3>
                 <div class="metrics">
@@ -60,15 +65,21 @@
     <section class="bottom-section">
         <div class="top-selling-products">
             <h3>Top Selling Products</h3>
-            <ul class="product-list">
+
+            <ul *ngIf="isLoadingTopProducts" class="loading-product-list">
+                <i class="fal fa-spinner"></i>
+                <p>Loading top-selling products</p>
+            </ul>
+
+            <ul *ngIf="!isLoadingTopProducts" class="product-list">
                 <li *ngFor="let product of topProducts">
                     <span class="product-name">{{ product.brand_name }}</span>
                     <span class="sold-quantity">{{ product.products_sold }} units sold</span>
                     <span class="sold-value">{{ product.sales_value | currency }}</span>
                 </li>
             </ul>
-            <div *ngIf="topProducts.length === 0" class="no-items-message">
-                <i class="fal fa-inbox"></i>
+            <div *ngIf="!isLoadingTopProducts && topProducts.length === 0" class="no-items-message">
+                <i class="fal fa-dolly-empty"></i>
                 <p>No top-selling products found</p>
             </div>
         </div>
@@ -76,18 +87,24 @@
         <div class="low-stock-alerts">
             <div class="low-stock-header">
                 <h3>Low Stock Alerts</h3>
-                <span class="threshold">Threshold: {{ threshold }} units</span>
+                <span *ngIf="!isLoadingLowStockItems" class="threshold">Threshold: {{ threshold }} units</span>
             </div>
-            <ul class="alert-list">
+
+            <ul *ngIf="isLoadingLowStockItems" class="loading-alert-list">
+                <i class="fal fa-spinner"></i>
+                <p>Loading low stock items</p>
+            </ul>
+
+            <ul *ngIf="!isLoadingLowStockItems" class="alert-list">
                 <li *ngFor="let item of lowStockItems" class="alert-item">
                     <span class="product-name">{{ item.brand_name }}</span>
                     <span class="product-type">{{ item.type }}</span>
                     <span class="current-stock">{{ item.quantity_on_hand }} units remaining</span>
                 </li>
             </ul>
-            <div *ngIf="lowStockItems.length === 0" class="no-items-message">
-                <i class="fal fa-inbox"></i>
-                <p>No top-selling products found</p>
+            <div *ngIf="!isLoadingLowStockItems && lowStockItems.length === 0" class="no-items-message">
+                <i class="fal fa-dolly-empty"></i>
+                <p>No low stock items found</p>
             </div>
         </div>
     </section>

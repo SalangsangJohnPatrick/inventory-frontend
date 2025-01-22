@@ -52,7 +52,8 @@
         }
     }
 
-    .no-items-message {
+    .no-items-message,
+    .loading-inventory-valuation {
         background-color: white;
         border-radius: 8px;
         padding: 48px 24px;
@@ -68,12 +69,12 @@
 
         i {
             font-size: 32px;
-            color: #999;
+            color: #333;
         }
 
         p {
             font-size: 18px;
-            color: #333;
+            color: #666;
             font-weight: 500;
             margin: 0;
         }
@@ -157,7 +158,9 @@
             margin: 0 0 16px 0;
         }
 
-        .no-items-message {
+        .no-items-message, 
+        .loading-product-list,
+        .loading-alert-list {
             background-color: white;
             border-radius: 8px;
             padding: 48px 24px;
@@ -173,12 +176,12 @@
 
             i {
                 font-size: 32px;
-                color: #999;
+                color: #333;
             }
 
             p {
                 font-size: 18px;
-                color: #333;
+                color: #666;
                 font-weight: 500;
                 margin: 0;
             }

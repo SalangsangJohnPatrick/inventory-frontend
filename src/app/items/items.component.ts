@@ -23,6 +23,7 @@ export class ItemsComponent {
   showAddModal = false;
   showImportModal = false;
   showUpdateModal = false;
+  isLoadingInventories = true;
 
   selectedItem: InventoryItem | null = null;
   inventories: InventoryItem[] = [];
@@ -45,6 +46,7 @@ export class ItemsComponent {
 
   loadInventoryItems() {
     this.inventoryApiService.getInventoryItems().subscribe(data => {
+      this.isLoadingInventories = false;
       this.inventories = data;
       this.filteredInventories = this.inventories;
       this.totalItems = this.filteredInventories.length;
