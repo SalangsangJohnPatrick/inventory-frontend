@@ -1,20 +1,26 @@
+$amazon-yellow: #FF9900;
+$amazon-dark-grey: #232F3E;
+$amazon-light-grey: #F7F7F7;
+$amazon-black: #000000;
+$amazon-blue: #146EB4;
+
 .inventory-container {
     padding: 20px;
-    background: #F4F7FA;
+    background: $amazon-dark-grey;
     border-radius: 10px;
 
     .header {
         margin-bottom: 24px;
 
         h1 {
-            color: #333;
+            color: $amazon-yellow;
             font-size: 24px;
             font-weight: 600;
             margin: 0;
         }
 
         .subtitle {
-            color: #666;
+            color: $amazon-light-grey;
             font-size: 16px;
         }
     }
@@ -34,18 +40,20 @@
                 left: 12px;
                 top: 50%;
                 transform: translateY(-50%);
-                color: #666;
+                color: $amazon-light-grey;
             }
 
             .search-input {
                 width: 100%;
                 padding: 8px 8px 8px 40px;
-                border: 1px solid #ddd;
+                border: none;
                 border-radius: 20px;
                 font-size: 14px;
+                font-weight: 600;
+                background-color: $amazon-yellow;
 
                 &::placeholder {
-                    color: #999;
+                    color: $amazon-light-grey;
                 }
             }
         }
@@ -62,17 +70,18 @@
                 border-radius: 4px;
                 border: none;
                 font-size: 14px;
+                font-weight: 600;
                 cursor: pointer;
 
                 &.import-btn,
                 &.add-btn {
-                    background-color: #333;
-                    color: #f5f5f5;
+                    background-color: $amazon-yellow;
+                    color: $amazon-light-grey;
                 }
 
                 &.import-btn:hover,
                 &.add-btn:hover {
-                    background-color: #444;
+                    background-color: #ff9900d5;
                 }
 
             }
@@ -117,11 +126,11 @@
             td {
                 padding: 12px;
                 text-align: left;
-                border-bottom: 1px solid #eee;
+                color: $amazon-light-grey;
             }
 
             th {
-                background-color: #FFFFFF;
+                background-color: $amazon-yellow;
                 font-weight: 600;
             }
 
@@ -170,6 +179,12 @@
             align-items: center;
             gap: 8px;
 
+            p {
+                font-size: 18px;
+                color: $amazon-light-grey;
+                margin: 0;
+            }
+
             select {
                 padding: 4px 8px;
                 border: 1px solid #ddd;
@@ -189,9 +204,9 @@
                 cursor: pointer;
 
                 &.active {
-                    background-color: #333;
+                    background-color: $amazon-yellow;
                     color: white;
-                    border-color: #333;
+                    border-color: $amazon-yellow;
                 }
 
                 &:hover:not(.active) {

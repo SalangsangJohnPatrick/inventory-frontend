@@ -1,12 +1,12 @@
 .body {
     width: calc(100% - 5rem);
-    // height: 100vh;
     margin-left: 5rem;
     z-index: 0;
     position: relative;
     top: 0;
+    min-height: 100%;
     transition: all 0.5s ease;
-    background: #FFFFFF;
+    background: #FEFFED;
     padding: 3rem;
 }
 

@@ -1,22 +1,28 @@
+$amazon-yellow: #FF9900;
+$amazon-dark-grey: #232F3E;
+$amazon-light-grey: #F7F7F7;
+$amazon-black: #000000;
+$amazon-blue: #146EB4;
+
 .sidenav {
-    background: #D9D9D9;
+    background: $amazon-dark-grey;  // Amazon Dark Grey for sidebar background
     transition: all .5s ease;
     position: fixed;
     z-index: 1;
     top: 0;
     width: 5rem;
     height: 100vh;
-    box-shadow: 0.063rem 0 0.125rem #8690a3;
+    box-shadow: 0.063rem 0 0.125rem rgba(134, 144, 163, 0.5);
 
     .logo-container {
         display: flex;
         align-items: center;
-        padding: 0.938rem 0.938rem 0 0.938rem;
+        padding: 0.938rem;
         width: 100%;
         margin-bottom: 1.5rem;
 
         .logo {
-            background: #FFFFFF;
+            background: $amazon-yellow;  // Amazon Yellow for the logo button
             text-align: center;
             width: 3rem;
             min-width: 3rem;
@@ -26,13 +32,14 @@
             font-weight: 900;
             cursor: pointer;
             border: none;
+            color: $amazon-black;  // Black text for the logo
         }
 
         .logo-text {
             margin-left: 1.5rem;
             font-size: 24px;
             font-weight: 700;
-            color: #000000;
+            color: $amazon-light-grey;  // Light grey text for logo label
         }
 
         .btn-close {
@@ -45,7 +52,7 @@
             border: none;
 
             .fa-times {
-                color: #000000;
+                color: $amazon-light-grey;  // Light grey color for the close icon
                 font-size: 24px;
             }
         }
@@ -74,7 +81,7 @@
             display: flex;
             align-items: center;
             height: 3rem;
-            color: #28303F;
+            color: $amazon-light-grey;  // Light grey text for nav links
             text-decoration: none;
             border-radius: 0.625rem;
             transition: all 0.3s ease;
@@ -85,27 +92,37 @@
                 min-width: 2rem;
                 margin: 0 1rem;
                 text-align: center;
+                color: $amazon-light-grey;  // Light grey icon color
             }
 
             .sidenav-link-text {
                 margin-left: 1.5rem;
+                color: $amazon-light-grey;  // Light grey color for text
             }
         }
     }
 
     .sidenav-nav-item:hover {
         .sidenav-nav-link {
-            background: #FFFFFF;
-            color: #000000;
+            background: $amazon-blue;  // Blue background on hover
+            color: $amazon-light-grey;  // Light grey text on hover
+        }
+
+        .sidenav-link-icon {
+            color: $amazon-light-grey;  // Light grey icon on hover
+        }
+
+        .sidenav-link-text {
+            color: $amazon-light-grey;  // Light grey text color on hover
         }
     }
 }
 
 .active {
-    background-color: #FFFFFF;
+    background-color: $amazon-blue;  // Blue background for active items
 
     .sidenav-link-icon,
     .sidenav-link-text {
-        color: #000000;
+        color: $amazon-light-grey;  // Light grey color for active icon and text
     }
 }
