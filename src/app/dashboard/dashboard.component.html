@@ -18,13 +18,13 @@
 
         <div *ngIf="isLoadingValuation" class="loading-inventory-valuation">
             <i class="fal fa-spinner"></i>
-            <p>Loading valuation report for {{ inventoryType | titlecase }}</p>
+            <p>Loading valuation report for {{ inventoryType | titlecase }}.</p>
         </div>
 
         <div *ngIf="!isLoadingValuation && items.length === 0" class="no-items-message">
             <i class="fal fa-dolly-empty"></i>
-            <p>No valuation report found for {{ inventoryType | titlecase }}</p>
-            <span class="suggestion">Try selecting a different inventory type</span>
+            <p>No valuation report found for {{ inventoryType | titlecase }}.</p>
+            <span class="suggestion">Try selecting a different inventory type.</span>
         </div>
 
         <div *ngIf="!isLoadingValuation && items.length > 0" class="summary-cards">
@@ -68,7 +68,7 @@
 
             <ul *ngIf="isLoadingTopProducts" class="loading-product-list">
                 <i class="fal fa-spinner"></i>
-                <p>Loading top-selling products</p>
+                <p>Loading top-selling products.</p>
             </ul>
 
             <ul *ngIf="!isLoadingTopProducts" class="product-list">
@@ -80,7 +80,7 @@
             </ul>
             <div *ngIf="!isLoadingTopProducts && topProducts.length === 0" class="no-items-message">
                 <i class="fal fa-dolly-empty"></i>
-                <p>No top-selling products found</p>
+                <p>No top-selling products found.</p>
             </div>
         </div>
 
@@ -92,7 +92,7 @@
 
             <ul *ngIf="isLoadingLowStockItems" class="loading-alert-list">
                 <i class="fal fa-spinner"></i>
-                <p>Loading low stock items</p>
+                <p>Loading low stock items.</p>
             </ul>
 
             <ul *ngIf="!isLoadingLowStockItems" class="alert-list">
@@ -104,7 +104,7 @@
             </ul>
             <div *ngIf="!isLoadingLowStockItems && lowStockItems.length === 0" class="no-items-message">
                 <i class="fal fa-dolly-empty"></i>
-                <p>No low stock items found</p>
+                <p>No low stock items found.</p>
             </div>
         </div>
     </section>

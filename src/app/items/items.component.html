@@ -61,12 +61,13 @@
 
         <div *ngIf="!isLoadingInventories && paginatedInventories.length === 0" class="no-items-message">
             <i class="fal fa-dolly-empty"></i>
-            <p>No inventories found</p>
+            <p>No inventories found.</p>
+            <span class="suggestion">Try adding an item.</span>
         </div>
 
         <div *ngIf="isLoadingInventories" class="loading-inventories">
             <i class="fal fa-spinner"></i>
-            <p>Loading all inventories from database</p>
+            <p>Loading all inventories from database.</p>
         </div>
     </div>
 

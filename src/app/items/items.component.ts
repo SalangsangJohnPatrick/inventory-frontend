@@ -58,6 +58,7 @@ export class ItemsComponent {
       this.paginateInventories();
     },
     error => {
+      this.isLoadingInventories = false;
       console.error('Error fetching inventory items:', error);
     });
   }
