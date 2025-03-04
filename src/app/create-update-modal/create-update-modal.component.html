@@ -7,7 +7,7 @@
             </button>
         </div>
 
-        <div class="modal-content p-4">
+        <div class="modal-content">
             <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                     <label for="brand_name">Brand Name</label>
@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                <div class="modal-actions d-flex justify-content-end gap-2 mt-3">
+                <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
                     <button type="submit" class="btn btn-primary" [disabled]="!inventoryForm.valid">{{ item ? 'Update' : 'Add' }}</button>
                 </div>
