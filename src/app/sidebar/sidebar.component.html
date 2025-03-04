@@ -1,18 +1,19 @@
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
-    <div class="logo-container">
-        <button class="logo" (click)="toggleCollapsed()">IM</button>
-        <div class="logo-text" *ngIf="collapsed">IManager</div>
-        <button class="btn-close" *ngIf="collapsed" (click)="closeSidebar()">
-            <i class="fal fa-times close-icon"></i>
+<div class="sidenav d-flex flex-column bg-dark position-fixed" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+    <div class="logo-container d-flex align-items-center p-3 mb-3">
+        <!-- Logo Button -->
+        <button class="logo btn btn-warning text-black p-2" (click)="toggleCollapsed()">IM</button>
+        <!-- Logo Text (Only Visible when Collapsed) -->
+        <div class="logo-text ms-3 text-light fs-4 fw-bold" *ngIf="collapsed">IManager</div>
+        <!-- Close Button -->
+        <button class="btn-close ms-auto d-flex justify-content-center align-items-center" *ngIf="collapsed" (click)="closeSidebar()">
+            <i class="fas fa-times text-light"></i>
         </button>
     </div>
-    <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}"
-            >
-                <i class="sidenav-link-icon" [class]="data.icon"></i>
+
+    <ul class="sidenav-nav list-unstyled p-3 mb-0 d-flex flex-column align-items-center">
+        <li class="sidenav-nav-item w-100 mb-2" *ngFor="let data of navData">
+            <a class="sidenav-nav-link d-flex align-items-center text-light text-decoration-none p-2 rounded" [routerLink]="[data.routeLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <i class="sidenav-link-icon me-3" [class]="data.icon"></i>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
             </a>
         </li>

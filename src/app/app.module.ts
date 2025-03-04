@@ -9,10 +9,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { ItemsComponent } from './items/items.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AddItemComponent } from './modals/add-item/add-item.component';
-import { ImportComponent } from './modals/import/import.component';
-import { ModalsComponent } from './modals/modals.component';
-import { UpdateItemComponent } from './modals/update-item/update-item.component';
+import { ImportComponent } from './import/import.component';
+import { CreateUpdateModalComponent } from './create-update-modal/create-update-modal.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -21,17 +20,16 @@ import { UpdateItemComponent } from './modals/update-item/update-item.component'
     DashboardComponent,
     SidebarComponent,
     ItemsComponent,
-    AddItemComponent,
     ImportComponent,
-    ModalsComponent,
-    UpdateItemComponent
+    CreateUpdateModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

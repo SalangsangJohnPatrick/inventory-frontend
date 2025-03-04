@@ -11,10 +11,10 @@
         </div>
 
         <div class="button-group">
-            <button (click)="onImportClick()" class="btn import-btn">
+            <button class="btn import-btn">
                 <i class="fal fa-file-import"></i> Import File
             </button>
-            <button (click)="onAddClick()" class="btn add-btn">
+            <button (click)="openModal()" class="btn add-btn">
                 <i class="fal fa-plus"></i> Add Item
             </button>
         </div>
@@ -48,7 +48,7 @@
                     <td>{{inventory.products_sold}}</td>
                     <td>{{inventory.sales_value | currency}}</td>
                     <td class="actions-cell">
-                        <button class="action-btn modify-btn" (click)="onModify(inventory)">
+                        <button class="action-btn modify-btn" (click)="openModal(inventory)">
                             <i class="fal fa-pencil"></i>
                         </button>
                         <button class="action-btn delete-btn" (click)="onDelete(inventory)">
@@ -93,21 +93,5 @@
                     (click)="changePage(currentPage + 1)"></button>
         </div>
     </div>
-
-    <app-modals
-        [showAddModal]="showAddModal" 
-        (closeAddModal)="closeAddModal()"
-        (addItem)="onAddItem($event)"
-
-        [showImportModal]="showImportModal" 
-        (closeImportModal)="closeImportModal()"
-        (importFile)="onImportFile($event)"
-        
-        [showUpdateModal]="showUpdateModal"
-        [selectedItem]="selectedItem"
-        (closeUpdateModal)="closeUpdateModal()"  
-        (updateItem)="onUpdateItem($event)">
-        >
-    </app-modals>
 
 </div>

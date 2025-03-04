@@ -17,8 +17,8 @@ export class InventoryApiService {
     return this.http.get<any>(`http://localhost:8000/InventoryValuationReport/${type}`);
   }
 
-  addInventoryItem(item: any): Observable<any> {
-    return this.http.post<any>('http://localhost:8000/CreateInventoryItem', item);
+  addInventoryItem(formData: FormData): Observable<any> {
+    return this.http.post<any>('http://localhost:8000/CreateInventoryItem', formData);
   }
 
   importInventoryItems(formData: FormData): Observable<any> {

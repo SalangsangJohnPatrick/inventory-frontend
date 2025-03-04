@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { InventoryApiService } from '../inventory-api/inventory-api.service';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CreateUpdateModalComponent } from '../create-update-modal/create-update-modal.component';
 
 interface InventoryItem {
   id: number;
@@ -38,7 +40,10 @@ export class ItemsComponent {
 
   math = Math;
 
-  constructor(private inventoryApiService: InventoryApiService) {}
+  constructor(
+    private inventoryApiService: InventoryApiService,
+    private _modal: NgbModal
+  ) {}
 
   ngOnInit() {
     this.loadInventoryItems();
@@ -74,52 +79,15 @@ export class ItemsComponent {
     this.paginateInventories();
   }
 
-  onAddClick() {
-    this.showAddModal = true;
-  }
-
-  onImportClick() {
-    this.showImportModal = true;
-  }
-
-  closeAddModal() {
-    this.showAddModal = false;
-  }
-
-  closeImportModal() {
-    this.showImportModal = false;
-  }
-
-  closeUpdateModal() {
-    this.showUpdateModal = false;
-    this.selectedItem = null;
-  }
-
-  onModify(item: InventoryItem) {
-    this.showUpdateModal = true;
-    this.selectedItem = item;
-  }
-
-  onAddItem(item: any) {
-    this.inventoryApiService.addInventoryItem(item).subscribe(
+  openModal(item: InventoryItem | null = null) {
+    const modal = this._modal.open(CreateUpdateModalComponent, { backdrop: 'static', size: 'lg' });
+    modal.componentInstance.item = item;
+    modal.result.then(
       () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: 'Item has been added successfully',
-          confirmButtonColor: '#3085d6'
-        });
         this.loadInventoryItems();
-        this.showAddModal = false;
       },
-      error => {
-        console.error('Error adding inventory item:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'There was an error adding the item. Please try again.',
-          confirmButtonColor: '#d33'
-        });
+      (reason) => {
+
       }
     );
   }
@@ -155,41 +123,6 @@ export class ItemsComponent {
           icon: 'error',
           title: 'Import Failed',
           text: 'There was an error importing the file. Please try again.',
-          confirmButtonColor: '#d33'
-        });
-      }
-    );
-  }
-
-  onUpdateItem(updatedItem: InventoryItem) {
-    Swal.fire({
-      title: 'Updating...',
-      text: 'Please wait while we update the item',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      willOpen: () => {
-        Swal.showLoading();
-      }
-    });
-  
-    this.inventoryApiService.updateInventoryItem(updatedItem.id, updatedItem).subscribe(
-      () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Updated!',
-          text: 'Item has been updated successfully',
-          timer: 2000,
-          showConfirmButton: false
-        });
-        this.loadInventoryItems();
-        this.showUpdateModal = false;
-      },
-      error => {
-        console.error('Error updating inventory item:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Update Failed',
-          text: 'There was an error updating the item. Please try again.',
           confirmButtonColor: '#d33'
         });
       }
