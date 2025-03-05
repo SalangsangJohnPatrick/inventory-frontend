@@ -21,32 +21,63 @@
     </div>
 
     <div class="table-container">
-        <table *ngIf="!isLoadingInventories && paginatedInventories.length > 0">
+        <table *ngIf="!isLoadingInventories && paginatedInventories.length > 0" matSort
+            (matSortChange)="onSort($event)">
             <thead>
                 <tr>
-                    <!-- <th><input type="checkbox"></th> -->
-                    <th>ID</th>
-                    <th>Brand Name</th>
-                    <th>Type</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Inventory Value</th>
-                    <th>Product Sold</th>
-                    <th>Sales Value</th>
+                    <th mat-sort-header="id" role="button">ID
+                        <mat-icon *ngIf="sortField === 'id'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
+                    <th mat-sort-header="brand_name" role="button">Brand Name
+                        <mat-icon *ngIf="sortField === 'brand_name'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
+                    <th mat-sort-header="type" role="button">Type
+                        <mat-icon *ngIf="sortField === 'type'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
+                    <th mat-sort-header="quantity_on_hand" role="button">Quantity
+                        <mat-icon *ngIf="sortField === 'quantity_on_hand'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
+                    <th mat-sort-header="price" role="button">Price
+                        <mat-icon *ngIf="sortField === 'price'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
+                    <th mat-sort-header="inventory_value" role="button">Inventory Value
+                        <mat-icon *ngIf="sortField === 'inventory_value'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
+                    <th mat-sort-header="products_sold" role="button">Product Sold
+                        <mat-icon *ngIf="sortField === 'products_sold'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
+                    <th mat-sort-header="sales_value" role="button">Sales Value
+                        <mat-icon *ngIf="sortField === 'sales_value'" class="sort-icon">
+                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
+                        </mat-icon>
+                    </th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let inventory of paginatedInventories">
-                    <!-- <td><input type="checkbox"></td> -->
-                    <td>{{inventory.id}}</td>
-                    <td>{{inventory.brand_name}}</td>
-                    <td>{{inventory.type}}</td>
-                    <td>{{inventory.quantity_on_hand}} pcs</td>
-                    <td>{{inventory.price | currency}}</td>
-                    <td>{{inventory.inventory_value | currency}}</td>
-                    <td>{{inventory.products_sold}}</td>
-                    <td>{{inventory.sales_value | currency}}</td>
+                    <td>{{ inventory.id }}</td>
+                    <td>{{ inventory.brand_name }}</td>
+                    <td>{{ inventory.type }}</td>
+                    <td>{{ inventory.quantity_on_hand }} pcs</td>
+                    <td>{{ inventory.price | currency }}</td>
+                    <td>{{ inventory.inventory_value | currency }}</td>
+                    <td>{{ inventory.products_sold }}</td>
+                    <td>{{ inventory.sales_value | currency }}</td>
                     <td class="actions-cell">
                         <button class="action-btn modify-btn" (click)="openModal(inventory)">
                             <i class="fal fa-pencil"></i>
@@ -59,6 +90,31 @@
             </tbody>
         </table>
 
+        <div class="pagination">
+            <span class="items-per-page">
+                <p>Showing</p>
+                <select (change)="changeItemsPerPage($event)">
+                    <option [value]="5">5</option>
+                    <option [value]="10" selected>10</option>
+                    <option [value]="15">15</option>
+                    <option [value]="20">20</option>
+                    <option [value]="25">25</option>
+                    <option [value]="30">30</option>
+                </select>
+                <p>items</p>
+            </span>
+            <div class="page-controls">
+                <button class="page-btn fal fa-chevron-left" [disabled]="currentPage === 1"
+                  (click)="changePage(currentPage - 1)"></button>
+                <button class="page-btn"
+                  *ngFor="let page of [].constructor(math.ceil(totalItems / itemsPerPage)); let i = index"
+                  (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{i + 1}}</button>
+                <button class="page-btn fal fa-chevron-right"
+                  [disabled]="currentPage === math.ceil(totalItems / itemsPerPage)"
+                  (click)="changePage(currentPage + 1)"></button>
+              </div>
+        </div>
+
         <div *ngIf="!isLoadingInventories && paginatedInventories.length === 0" class="no-items-message">
             <i class="fal fa-dolly-empty"></i>
             <p>No inventories found.</p>
@@ -68,30 +124,6 @@
         <div *ngIf="isLoadingInventories" class="loading-inventories">
             <i class="fal fa-spinner"></i>
             <p>Loading all inventories from database.</p>
-        </div>
-    </div>
-
-    <div class="pagination">
-        <span class="items-per-page">
-            <p>Showing</p>
-            <select (change)="changeItemsPerPage($event)">
-                <option [value]="5">5</option>
-                <option [value]="10" selected>10</option>
-                <option [value]="15">15</option>
-                <option [value]="20">20</option>
-                <option [value]="25">25</option>
-                <option [value]="30">30</option>
-            </select>
-            <p>items</p>
-        </span>
-        <div class="page-controls">
-            <button class="page-btn fal fa-chevron-left" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)"></button>
-            <button class="page-btn" *ngFor="let page of [].constructor(math.ceil(totalItems / itemsPerPage)); let i = index" 
-                    (click)="changePage(i + 1)" 
-                    [class.active]="currentPage === i + 1">{{i + 1}}</button>
-            <button class="page-btn fal fa-chevron-right"
-                    [disabled]="currentPage === math.ceil(totalItems / itemsPerPage)" 
-                    (click)="changePage(currentPage + 1)"></button>
         </div>
     </div>
 

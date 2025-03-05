@@ -1,31 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InventoryApiService } from '../inventory-api/inventory-api.service';
-import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateUpdateModalComponent } from '../create-update-modal/create-update-modal.component';
-
-interface InventoryItem {
-  id: number;
-  brand_name: string;
-  type: string;
-  quantity_on_hand: number;
-  price: number;
-  inventory_value: number;
-  products_sold: number;
-  sales_value: number;
-}
+import { InventoryItem } from '../types/inventory.type';
+import Swal from 'sweetalert2';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-items',
   templateUrl: './items.component.html',
   styleUrls: ['./items.component.scss']
 })
-export class ItemsComponent {
+export class ItemsComponent implements OnInit {
 
-  showAddModal = false;
-  showImportModal = false;
-  showUpdateModal = false;
   isLoadingInventories = true;
+  showImportModal = false;
 
   selectedItem: InventoryItem | null = null;
   inventories: InventoryItem[] = [];
@@ -33,6 +22,8 @@ export class ItemsComponent {
   paginatedInventories: InventoryItem[] = [];
 
   searchQuery = '';
+  sortField: string = 'id';
+  sortOrder: 'ASC' | 'DESC' | '' = 'ASC';
 
   currentPage = 1;
   itemsPerPage = 10;
@@ -43,24 +34,25 @@ export class ItemsComponent {
   constructor(
     private inventoryApiService: InventoryApiService,
     private _modal: NgbModal
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadInventoryItems();
+
   }
 
   loadInventoryItems() {
-    this.inventoryApiService.getInventoryItems().subscribe(data => {
-      this.isLoadingInventories = false;
+    this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe(data => {
       this.inventories = data;
       this.filteredInventories = this.inventories;
-      this.totalItems = this.filteredInventories.length;
       this.paginateInventories();
-    },
-    error => {
+      this.totalItems = this.filteredInventories.length;
       this.isLoadingInventories = false;
-      console.error('Error fetching inventory items:', error);
-    });
+    },
+      error => {
+        this.isLoadingInventories = false;
+        console.error('Error fetching inventory items:', error);
+      });
   }
 
   paginateInventories() {
@@ -68,7 +60,7 @@ export class ItemsComponent {
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedInventories = this.filteredInventories.slice(startIndex, endIndex);
   }
-
+  
   changePage(pageNumber: number) {
     this.currentPage = pageNumber;
     this.paginateInventories();
@@ -79,6 +71,17 @@ export class ItemsComponent {
     this.currentPage = 1;
     this.paginateInventories();
   }
+
+  onSort(sortEvent: Sort) {
+    const sortField = sortEvent.active;
+    const sortOrder = sortEvent.direction === 'asc' ? 'ASC' : 'DESC';
+
+    this.sortField = sortField;
+    this.sortOrder = sortOrder;
+
+    this.loadInventoryItems();
+  }
+
 
   openModal(item: InventoryItem | null = null) {
     const modal = this._modal.open(CreateUpdateModalComponent, { backdrop: 'static', size: 'lg' });
@@ -92,11 +95,11 @@ export class ItemsComponent {
       }
     );
   }
-  
+
   onImportFile(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-  
+
     Swal.fire({
       title: 'Importing...',
       text: 'Please wait while we process your file',
@@ -106,7 +109,7 @@ export class ItemsComponent {
         Swal.showLoading();
       }
     });
-  
+
     this.inventoryApiService.importInventoryItems(formData).subscribe(
       () => {
         Swal.fire({

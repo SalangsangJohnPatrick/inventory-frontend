@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,12 @@ export class InventoryApiService {
 
   constructor(private http: HttpClient) {}
 
-  getInventoryItems(): Observable<any> {
-    return this.http.get<any>('http://localhost:8000/GetAllInventoryItems');
+  getInventoryItems(sortField: string = '', sortOrder: string = ''): Observable<any> {
+    const params = new HttpParams()
+      .set('sortField', sortField)
+      .set('sortOrder', sortOrder);
+
+    return this.http.get<any>('http://localhost:8000/GetAllInventoryItems', { params });
   }
 
   getValuationReportByType(type: string): Observable<any> {
