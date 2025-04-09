@@ -5,6 +5,7 @@ import { CreateUpdateModalComponent } from '../create-update-modal/create-update
 import { InventoryItem } from '../types/inventory.type';
 import Swal from 'sweetalert2';
 import { Sort } from '@angular/material/sort';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-items',
@@ -13,13 +14,11 @@ import { Sort } from '@angular/material/sort';
 })
 export class ItemsComponent implements OnInit {
 
-  isLoadingInventories = true;
   showImportModal = false;
+  isLoading$: Observable<Boolean> = new Observable<Boolean>();
 
   selectedItem: InventoryItem | null = null;
-  inventories: InventoryItem[] = [];
-  filteredInventories: InventoryItem[] = [];
-  paginatedInventories: InventoryItem[] = [];
+  inventories$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
 
   searchQuery = '';
   sortField: string = 'id';
@@ -37,40 +36,30 @@ export class ItemsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadInventoryItems();
+    this.inventories$ = this.inventoryApiService.inventories$;
+    this.isLoading$ = this.inventoryApiService.isLoading$;
 
+    console.log(this.inventories$.pipe());
+    console.log(this.isLoading$.pipe());
+    this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
   }
 
-  loadInventoryItems() {
-    this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe(data => {
-      this.inventories = data;
-      this.filteredInventories = this.inventories;
-      this.paginateInventories();
-      this.totalItems = this.filteredInventories.length;
-      this.isLoadingInventories = false;
-    },
-      error => {
-        this.isLoadingInventories = false;
-        console.error('Error fetching inventory items:', error);
-      });
-  }
-
-  paginateInventories() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedInventories = this.filteredInventories.slice(startIndex, endIndex);
-  }
+  // paginateInventories() {
+  //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  //   const endIndex = startIndex + this.itemsPerPage;
+  //   this.paginatedInventories = this.filteredInventories.slice(startIndex, endIndex);
+  // }
   
-  changePage(pageNumber: number) {
-    this.currentPage = pageNumber;
-    this.paginateInventories();
-  }
+  // changePage(pageNumber: number) {
+  //   this.currentPage = pageNumber;
+  //   this.paginateInventories();
+  // }
 
-  changeItemsPerPage(event: any) {
-    this.itemsPerPage = +event.target.value;
-    this.currentPage = 1;
-    this.paginateInventories();
-  }
+  // changeItemsPerPage(event: any) {
+  //   this.itemsPerPage = +event.target.value;
+  //   this.currentPage = 1;
+  //   this.paginateInventories();
+  // }
 
   onSort(sortEvent: Sort) {
     const sortField = sortEvent.active;
@@ -79,7 +68,7 @@ export class ItemsComponent implements OnInit {
     this.sortField = sortField;
     this.sortOrder = sortOrder;
 
-    this.loadInventoryItems();
+    this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
   }
 
 
@@ -88,47 +77,10 @@ export class ItemsComponent implements OnInit {
     modal.componentInstance.item = item;
     modal.result.then(
       () => {
-        this.loadInventoryItems();
+        this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
       },
       (reason) => {
 
-      }
-    );
-  }
-
-  onImportFile(file: File) {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    Swal.fire({
-      title: 'Importing...',
-      text: 'Please wait while we process your file',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      willOpen: () => {
-        Swal.showLoading();
-      }
-    });
-
-    this.inventoryApiService.importInventoryItems(formData).subscribe(
-      () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Import Successful',
-          text: 'Your file has been imported successfully',
-          confirmButtonColor: '#3085d6'
-        });
-        this.loadInventoryItems();
-        this.showImportModal = false;
-      },
-      error => {
-        console.error('Error importing file:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Import Failed',
-          text: 'There was an error importing the file. Please try again.',
-          confirmButtonColor: '#d33'
-        });
       }
     );
   }
@@ -154,7 +106,7 @@ export class ItemsComponent implements OnInit {
               timer: 2000,
               showConfirmButton: false
             });
-            this.loadInventoryItems();
+            this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
           },
           error => {
             console.error('Error deleting inventory item:', error);
@@ -170,15 +122,15 @@ export class ItemsComponent implements OnInit {
     });
   }
 
-  onSearch(event: any) {
-    this.searchQuery = event.target.value.toLowerCase();
-    this.filteredInventories = this.inventories.filter(inventory =>
-      inventory.brand_name.toLowerCase().includes(this.searchQuery) ||
-      inventory.type.toLowerCase().includes(this.searchQuery) ||
-      inventory.id.toString().includes(this.searchQuery)
-    );
-    this.totalItems = this.filteredInventories.length;
-    this.currentPage = 1;
-    this.paginateInventories();
-  }
+  // onSearch(event: any) {
+  //   this.searchQuery = event.target.value.toLowerCase();
+  //   this.filteredInventories = this.inventories.filter(inventory =>
+  //     inventory.brand_name.toLowerCase().includes(this.searchQuery) ||
+  //     inventory.type.toLowerCase().includes(this.searchQuery) ||
+  //     inventory.id.toString().includes(this.searchQuery)
+  //   );
+  //   this.totalItems = this.filteredInventories.length;
+  //   this.currentPage = 1;
+  //   this.paginateInventories();
+  // }
 }

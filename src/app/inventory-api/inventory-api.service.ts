@@ -1,11 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { InventoryItem } from '../types/inventory.type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryApiService {
+
+  private _inventories: BehaviorSubject<InventoryItem[]> = new BehaviorSubject<InventoryItem[]>([]);
+  private _isLoading: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(true);
+
+  get inventories$(): Observable<InventoryItem[]> {
+    return this._inventories.asObservable();
+  }
+
+  get isLoading$(): Observable<Boolean> {
+    return this._isLoading.asObservable();
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -14,7 +26,15 @@ export class InventoryApiService {
       .set('sortField', sortField)
       .set('sortOrder', sortOrder);
 
-    return this.http.get<any>('http://localhost:8000/GetAllInventoryItems', { params });
+    return this.http.get<any>('http://localhost:8000/GetAllInventoryItems', { params })
+    .pipe(
+      tap(data => {
+        this._inventories.next(data);
+      }),
+      finalize(() => {
+        this._isLoading.next(false);
+      })
+    );
   }
 
   getValuationReportByType(type: string): Observable<any> {
