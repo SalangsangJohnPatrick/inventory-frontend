@@ -20,15 +20,13 @@ export class ItemsComponent implements OnInit {
   selectedItem: InventoryItem | null = null;
   inventories$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
 
-  searchQuery = '';
+  search = '';
   sortField: string = 'id';
   sortOrder: 'ASC' | 'DESC' | '' = 'ASC';
 
   currentPage = 1;
   itemsPerPage = 10;
   totalItems = 0;
-
-  math = Math;
 
   constructor(
     private inventoryApiService: InventoryApiService,
@@ -38,28 +36,28 @@ export class ItemsComponent implements OnInit {
   ngOnInit() {
     this.inventories$ = this.inventoryApiService.inventories$;
     this.isLoading$ = this.inventoryApiService.isLoading$;
-
-    console.log(this.inventories$.pipe());
-    console.log(this.isLoading$.pipe());
-    this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
+    this.getInventoryItems();
   }
 
-  // paginateInventories() {
-  //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  //   const endIndex = startIndex + this.itemsPerPage;
-  //   this.paginatedInventories = this.filteredInventories.slice(startIndex, endIndex);
-  // }
-  
-  // changePage(pageNumber: number) {
-  //   this.currentPage = pageNumber;
-  //   this.paginateInventories();
-  // }
+  getInventoryItems() {
+    this.inventoryApiService.getInventoryItems(this.currentPage, this.itemsPerPage, this.search, this.sortField, this.sortOrder).subscribe(
+      response => {
+        this.totalItems = response.pagination.total;
+      }
+    );
 
-  // changeItemsPerPage(event: any) {
-  //   this.itemsPerPage = +event.target.value;
-  //   this.currentPage = 1;
-  //   this.paginateInventories();
-  // }
+    console.log(this.currentPage);
+  }
+  
+  changePage(pageNumber: number) {
+    this.currentPage = pageNumber;
+    this.getInventoryItems();
+  }
+
+  changeItemsPerPage() {
+    this.currentPage = 1;
+    this.getInventoryItems();
+  }
 
   onSort(sortEvent: Sort) {
     const sortField = sortEvent.active;
@@ -68,7 +66,7 @@ export class ItemsComponent implements OnInit {
     this.sortField = sortField;
     this.sortOrder = sortOrder;
 
-    this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
+    this.getInventoryItems();
   }
 
 
@@ -77,7 +75,7 @@ export class ItemsComponent implements OnInit {
     modal.componentInstance.item = item;
     modal.result.then(
       () => {
-        this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
+        this.getInventoryItems();
       },
       (reason) => {
 
@@ -106,7 +104,7 @@ export class ItemsComponent implements OnInit {
               timer: 2000,
               showConfirmButton: false
             });
-            this.inventoryApiService.getInventoryItems(this.sortField, this.sortOrder).subscribe();
+            this.getInventoryItems();
           },
           error => {
             console.error('Error deleting inventory item:', error);
@@ -122,15 +120,8 @@ export class ItemsComponent implements OnInit {
     });
   }
 
-  // onSearch(event: any) {
-  //   this.searchQuery = event.target.value.toLowerCase();
-  //   this.filteredInventories = this.inventories.filter(inventory =>
-  //     inventory.brand_name.toLowerCase().includes(this.searchQuery) ||
-  //     inventory.type.toLowerCase().includes(this.searchQuery) ||
-  //     inventory.id.toString().includes(this.searchQuery)
-  //   );
-  //   this.totalItems = this.filteredInventories.length;
-  //   this.currentPage = 1;
-  //   this.paginateInventories();
-  // }
+  onSearch(event: any) {
+    this.search = event.target.value;
+    this.getInventoryItems();
+  }
 }

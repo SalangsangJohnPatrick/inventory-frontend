@@ -21,21 +21,27 @@ export class InventoryApiService {
 
   constructor(private http: HttpClient) {}
 
-  getInventoryItems(sortField: string = '', sortOrder: string = ''): Observable<any> {
-    const params = new HttpParams()
-      .set('sortField', sortField)
-      .set('sortOrder', sortOrder);
-
-    return this.http.get<any>('http://localhost:8000/GetAllInventoryItems', { params })
-    .pipe(
-      tap(data => {
-        this._inventories.next(data);
-      }),
-      finalize(() => {
-        this._isLoading.next(false);
-      })
+  getInventoryItems(
+    currentPage: number,
+    itemsPerPage: number,
+    search = '',
+    sortField = '',
+    sortOrder = ''
+  ): Observable<{ data: InventoryItem[], pagination: any }> {
+    let params = new HttpParams({ fromObject: {
+      currentPage: currentPage.toString(),
+      itemsPerPage: itemsPerPage.toString(),
+      ...(search && { search }),
+      ...(sortField && { sortField }),
+      ...(sortOrder && { sortOrder })
+    }});
+  
+    return this.http.get<{ data: InventoryItem[], pagination: any }>('http://localhost:8000/GetAllInventoryItems', { params }).pipe(
+      tap(response => this._inventories.next(response.data)),
+      finalize(() => this._isLoading.next(false))
     );
   }
+  
 
   getValuationReportByType(type: string): Observable<any> {
     return this.http.get<any>(`http://localhost:8000/InventoryValuationReport/${type}`);

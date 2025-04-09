@@ -7,7 +7,7 @@
     <div class="actions-bar">
         <div class="search-container">
             <i class="fal fa-search search-icon"></i>
-            <input type="text" placeholder="Search Item" class="search-input">
+            <input type="text" placeholder="Search Item" class="search-input" (input)="onSearch($event)">
         </div>
 
         <div class="button-group">
@@ -90,30 +90,27 @@
             </tbody>
         </table>
 
-        <!-- <div class="pagination">
-            <span class="items-per-page">
-                <p>Showing</p>
-                <select (change)="changeItemsPerPage($event)">
-                    <option [value]="5">5</option>
-                    <option [value]="10" selected>10</option>
-                    <option [value]="15">15</option>
-                    <option [value]="20">20</option>
+        <div class="pagination-container" *ngIf="totalItems > 0">
+            <ngb-pagination
+                [collectionSize]="totalItems"
+                [(page)]="currentPage"
+                [pageSize]="itemsPerPage"
+                [maxSize]="5"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                (pageChange)="changePage($event)"
+                aria-label="Pagination navigation">
+            </ngb-pagination>
+            <div class="page-size-selector">
+                <label for="pageSize">Items per page:</label>
+                <select id="pageSize" [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
+                    <option [value]="10">10</option>
                     <option [value]="25">25</option>
-                    <option [value]="30">30</option>
+                    <option [value]="50">50</option>
+                    <option [value]="100">100</option>
                 </select>
-                <p>items</p>
-            </span>
-            <div class="page-controls">
-                <button class="page-btn fal fa-chevron-left" [disabled]="currentPage === 1"
-                  (click)="changePage(currentPage - 1)"></button>
-                <button class="page-btn"
-                  *ngFor="let page of [].constructor(math.ceil(totalItems / itemsPerPage)); let i = index"
-                  (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">{{i + 1}}</button>
-                <button class="page-btn fal fa-chevron-right"
-                  [disabled]="currentPage === math.ceil(totalItems / itemsPerPage)"
-                  (click)="changePage(currentPage + 1)"></button>
-              </div>
-        </div> -->
+            </div>
+        </div>
 
         <div *ngIf="!(isLoading$ | async) && !inventories$" class="no-items-message">
             <i class="fal fa-dolly-empty"></i>
