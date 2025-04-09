@@ -42,7 +42,6 @@ export class InventoryApiService {
     );
   }
   
-
   getValuationReportByType(type: string): Observable<any> {
     return this.http.get<any>(`http://localhost:8000/InventoryValuationReport/${type}`);
   }

@@ -45,8 +45,6 @@ export class ItemsComponent implements OnInit {
         this.totalItems = response.pagination.total;
       }
     );
-
-    console.log(this.currentPage);
   }
   
   changePage(pageNumber: number) {

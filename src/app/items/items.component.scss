@@ -221,8 +221,8 @@ $amazon-blue: #146EB4;
         }
 
         ::ng-deep ngb-pagination .page-item.active .page-link {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
+            background-color: $amazon-yellow;
+            border-color: $amazon-yellow;
             color: white;
         }
 

@@ -51,7 +51,6 @@ export class DashboardComponent implements OnInit {
   getInventoryValuationReport() {
     this.inventoryApiService.getValuationReportByType(this.inventoryType)
       .subscribe((data: any) => {
-        console.log(data);
         this.items = Array.isArray(data) ? data : [data];
         this.isLoadingValuation = false;
       }, error => {
@@ -71,7 +70,6 @@ export class DashboardComponent implements OnInit {
   getTopSellingProducts() {
     this.inventoryApiService.getTopSellingProducts()
       .subscribe((data: any) => {
-        console.log('Top-selling products:', data);
         this.topProducts = Array.isArray(data) ? data : [];
         this.isLoadingTopProducts = false;
       }, error => {
@@ -85,8 +83,6 @@ export class DashboardComponent implements OnInit {
   getLowStockItems() {
     this.inventoryApiService.getLowStockItems()
       .subscribe((data: any) => {
-        console.log('Low-stock items:', data);
-
         // Extract lowStockItems from the response
         this.lowStockItems = data.lowStockItems || []; // Safely extract lowStockItems if present
         this.threshold = data.threshold;

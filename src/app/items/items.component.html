@@ -12,7 +12,7 @@
 
         <div class="button-group">
             <button class="btn import-btn">
-                <i class="fal fa-file-import"></i> Import File
+                <i class="fal fa-filter"></i> Filter
             </button>
             <button (click)="openModal()" class="btn add-btn">
                 <i class="fal fa-plus"></i> Add Item
@@ -25,46 +25,14 @@
             (matSortChange)="onSort($event)">
             <thead>
                 <tr>
-                    <th mat-sort-header="id" role="button">ID
-                        <mat-icon *ngIf="sortField === 'id'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
-                    <th mat-sort-header="brand_name" role="button">Brand Name
-                        <mat-icon *ngIf="sortField === 'brand_name'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
-                    <th mat-sort-header="type" role="button">Type
-                        <mat-icon *ngIf="sortField === 'type'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
-                    <th mat-sort-header="quantity_on_hand" role="button">Quantity
-                        <mat-icon *ngIf="sortField === 'quantity_on_hand'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
-                    <th mat-sort-header="price" role="button">Price
-                        <mat-icon *ngIf="sortField === 'price'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
-                    <th mat-sort-header="inventory_value" role="button">Inventory Value
-                        <mat-icon *ngIf="sortField === 'inventory_value'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
-                    <th mat-sort-header="products_sold" role="button">Product Sold
-                        <mat-icon *ngIf="sortField === 'products_sold'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
-                    <th mat-sort-header="sales_value" role="button">Sales Value
-                        <mat-icon *ngIf="sortField === 'sales_value'" class="sort-icon">
-                            {{ sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward' }}
-                        </mat-icon>
-                    </th>
+                    <th mat-sort-header="id" role="button">ID</th>
+                    <th mat-sort-header="brand_name" role="button">Brand Name</th>
+                    <th mat-sort-header="type" role="button">Type</th>
+                    <th mat-sort-header="quantity_on_hand" role="button">Quantity</th>
+                    <th mat-sort-header="price" role="button">Price</th>
+                    <th mat-sort-header="inventory_value" role="button">Inventory Value</th>
+                    <th mat-sort-header="products_sold" role="button">Product Sold</th>
+                    <th mat-sort-header="sales_value" role="button">Sales Value</th>
                     <th>Actions</th>
                 </tr>
             </thead>
