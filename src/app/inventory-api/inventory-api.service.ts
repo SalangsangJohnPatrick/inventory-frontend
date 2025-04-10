@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, finalize, Observable, tap } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { InventoryItem } from '../types/inventory.type';
+import { Filter, InventoryItem } from '../types/inventory.type';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +9,15 @@ import { InventoryItem } from '../types/inventory.type';
 export class InventoryApiService {
 
   private _inventories: BehaviorSubject<InventoryItem[]> = new BehaviorSubject<InventoryItem[]>([]);
+  private _inventoriesDropdown: BehaviorSubject<InventoryItem[]> = new BehaviorSubject<InventoryItem[]>([]);
   private _isLoading: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(true);
 
   get inventories$(): Observable<InventoryItem[]> {
     return this._inventories.asObservable();
+  }
+
+  get inventoriesDropdown$(): Observable<InventoryItem[]> {
+    return this._inventoriesDropdown.asObservable();
   }
 
   get isLoading$(): Observable<Boolean> {
@@ -26,20 +31,29 @@ export class InventoryApiService {
     itemsPerPage: number,
     search = '',
     sortField = '',
-    sortOrder = ''
+    sortOrder = '',
+    filterForm: Filter
   ): Observable<{ data: InventoryItem[], pagination: any }> {
-    let params = new HttpParams({ fromObject: {
-      currentPage: currentPage.toString(),
-      itemsPerPage: itemsPerPage.toString(),
-      ...(search && { search }),
-      ...(sortField && { sortField }),
-      ...(sortOrder && { sortOrder })
-    }});
+    const params = {
+      currentPage,
+      itemsPerPage,
+      search,
+      sortField,
+      sortOrder,
+      filterForm
+    };
   
-    return this.http.get<{ data: InventoryItem[], pagination: any }>('http://localhost:8000/GetAllInventoryItems', { params }).pipe(
+    return this.http.post<{ data: InventoryItem[], pagination: any }>('http://localhost:8000/GetAllInventoryItems', params).pipe(
       tap(response => this._inventories.next(response.data)),
       finalize(() => this._isLoading.next(false))
     );
+  }
+
+  getInventoryDropdown(): void {
+    this.http.get<InventoryItem[]>('http://localhost:8000/GetInventoryDropdown')
+      .subscribe((data: InventoryItem[]) => {
+        this._inventoriesDropdown.next(data);
+      });
   }
   
   getValuationReportByType(type: string): Observable<any> {

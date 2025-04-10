@@ -6,6 +6,7 @@ import { InventoryItem } from '../types/inventory.type';
 import Swal from 'sweetalert2';
 import { Sort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-items',
@@ -19,6 +20,7 @@ export class ItemsComponent implements OnInit {
 
   selectedItem: InventoryItem | null = null;
   inventories$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
+  inventoriesDropdown$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
 
   search = '';
   sortField: string = 'id';
@@ -28,20 +30,31 @@ export class ItemsComponent implements OnInit {
   itemsPerPage = 10;
   totalItems = 0;
 
+  filterForm: FormGroup;
+
   constructor(
     private inventoryApiService: InventoryApiService,
-    private _modal: NgbModal
-  ) { }
+    private _modal: NgbModal,
+    private formBuilder: FormBuilder
+  ) {
+    this.filterForm = this.formBuilder.group({
+      id: [null],
+      brand_name: [null],
+      type: [null],
+    })
+  }
 
   ngOnInit() {
     this.inventories$ = this.inventoryApiService.inventories$;
     this.isLoading$ = this.inventoryApiService.isLoading$;
+    this.inventoriesDropdown$ = this.inventoryApiService.inventoriesDropdown$;
+    this.inventoryApiService.getInventoryDropdown();
     this.getInventoryItems();
   }
 
   getInventoryItems() {
-    this.inventoryApiService.getInventoryItems(this.currentPage, this.itemsPerPage, this.search, this.sortField, this.sortOrder).subscribe(
-      response => {
+    this.inventoryApiService.getInventoryItems(this.currentPage, this.itemsPerPage, this.search, this.sortField, this.sortOrder, this.filterForm.value).subscribe(
+      (response: { pagination: { total: number } }) => {
         this.totalItems = response.pagination.total;
       }
     );
@@ -52,7 +65,8 @@ export class ItemsComponent implements OnInit {
     this.getInventoryItems();
   }
 
-  changeItemsPerPage() {
+  changeItemsPerPage(pageSize: number) {
+    this.itemsPerPage = pageSize;
     this.currentPage = 1;
     this.getInventoryItems();
   }
@@ -67,6 +81,14 @@ export class ItemsComponent implements OnInit {
     this.getInventoryItems();
   }
 
+  onFilter() {
+    this.getInventoryItems();
+  }
+  
+  onClearFilter() {
+    this.filterForm.reset();
+    this.getInventoryItems();
+  }  
 
   openModal(item: InventoryItem | null = null) {
     const modal = this._modal.open(CreateUpdateModalComponent, { backdrop: 'static', size: 'lg' });

@@ -8,3 +8,9 @@ export interface InventoryItem {
     products_sold: number;
     sales_value: number;
 }
+
+export interface Filter {
+    id: number | null;
+    brand_name: string | null;
+    type: string | null;
+}

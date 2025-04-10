@@ -1,95 +1,128 @@
-<div class="inventory-container">
-    <div class="header">
-        <h1>All Items</h1>
-        <p class="subtitle">Item detail Information</p>
-    </div>
-
-    <div class="actions-bar">
-        <div class="search-container">
-            <i class="fal fa-search search-icon"></i>
-            <input type="text" placeholder="Search Item" class="search-input" (input)="onSearch($event)">
+<div class="container-fluid">
+    <div class="inventory-container">
+        <div class="header">
+            <h1>All Items</h1>
+            <p class="subtitle">Item detail Information</p>
         </div>
 
-        <div class="button-group">
-            <button class="btn import-btn">
-                <i class="fal fa-filter"></i> Filter
-            </button>
-            <button (click)="openModal()" class="btn add-btn">
-                <i class="fal fa-plus"></i> Add Item
-            </button>
-        </div>
-    </div>
+        <div class="actions-bar">
+            <div class="search-container">
+                <i class="fal fa-search search-icon"></i>
+                <input type="text" placeholder="Search Item" class="search-input" (input)="onSearch($event)">
+            </div>
 
-    <div class="table-container">
-        <table *ngIf="!(isLoading$ | async) && inventories$" matSort
-            (matSortChange)="onSort($event)">
-            <thead>
-                <tr>
-                    <th mat-sort-header="id" role="button">ID</th>
-                    <th mat-sort-header="brand_name" role="button">Brand Name</th>
-                    <th mat-sort-header="type" role="button">Type</th>
-                    <th mat-sort-header="quantity_on_hand" role="button">Quantity</th>
-                    <th mat-sort-header="price" role="button">Price</th>
-                    <th mat-sort-header="inventory_value" role="button">Inventory Value</th>
-                    <th mat-sort-header="products_sold" role="button">Product Sold</th>
-                    <th mat-sort-header="sales_value" role="button">Sales Value</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let inventory of inventories$ | async">
-                    <td>{{ inventory.id }}</td>
-                    <td>{{ inventory.brand_name }}</td>
-                    <td>{{ inventory.type }}</td>
-                    <td>{{ inventory.quantity_on_hand }} pcs</td>
-                    <td>{{ inventory.price | currency }}</td>
-                    <td>{{ inventory.inventory_value | currency }}</td>
-                    <td>{{ inventory.products_sold }}</td>
-                    <td>{{ inventory.sales_value | currency }}</td>
-                    <td class="actions-cell">
-                        <button class="action-btn modify-btn" (click)="openModal(inventory)">
-                            <i class="fal fa-pencil"></i>
-                        </button>
-                        <button class="action-btn delete-btn" (click)="onDelete(inventory)">
-                            <i class="fal fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="pagination-container" *ngIf="totalItems > 0">
-            <ngb-pagination
-                [collectionSize]="totalItems"
-                [(page)]="currentPage"
-                [pageSize]="itemsPerPage"
-                [maxSize]="5"
-                [rotate]="true"
-                [boundaryLinks]="true"
-                (pageChange)="changePage($event)"
-                aria-label="Pagination navigation">
-            </ngb-pagination>
-            <div class="page-size-selector">
-                <label for="pageSize">Items per page:</label>
-                <select id="pageSize" [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()">
-                    <option [value]="10">10</option>
-                    <option [value]="25">25</option>
-                    <option [value]="50">50</option>
-                    <option [value]="100">100</option>
-                </select>
+            <div class="button-group">
+                <div ngbDropdown class="d-inline-block position-relative">
+                    <button type="button" id="dropdownBasic1" ngbDropdownToggle class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm">
+                        <i class="fas fa-filter"></i> <span>Filter</span>
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="p-3 shadow-lg border-0 rounded-3">
+                        <h6 class="dropdown-header border-bottom pb-2 mb-3">Filter Options</h6>
+                        <form [formGroup]="filterForm" (ngSubmit)="onFilter()">
+                            <div class="form-group mb-3">
+                                <div class="form-group mb-3">
+                                    <label for="brandSelect" class="form-label fw-medium text-secondary">Brand Selection</label>
+                                    <select id="brandSelect" class="form-select" formControlName="brand_name" *ngIf="inventoriesDropdown$ | async as inventories">
+                                        <option *ngFor="let item of inventories" [value]="item.id">
+                                            {{ item.id }} - {{ item.brand_name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="typeSelect" class="form-label fw-medium text-secondary">Type Selection</label>
+                                    <select id="typeSelect" class="form-select" formControlName="type">
+                                        <option value="Keyboard">Keyboard</option>
+                                        <option value="Mouse">Mouse</option>
+                                        <option value="Monitor">Monitor</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2 mt-4 pt-2 border-top">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onClearFilter()">
+                                    <i class="fas fa-times me-1"></i> Clear
+                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                    <i class="fas fa-check me-1"></i> Apply
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button (click)="openModal()" class="btn add-btn">
+                    <i class="fal fa-plus"></i> Add Item
+                </button>
             </div>
         </div>
 
-        <div *ngIf="!(isLoading$ | async) && !inventories$" class="no-items-message">
-            <i class="fal fa-dolly-empty"></i>
-            <p>No inventories found.</p>
-            <span class="suggestion">Try adding an item.</span>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle border" *ngIf="!(isLoading$ | async) && inventories$" matSort
+                (matSortChange)="onSort($event)">
+                <thead>
+                    <tr>
+                        <th mat-sort-header="id" role="button">ID</th>
+                        <th mat-sort-header="brand_name" role="button">Brand Name</th>
+                        <th mat-sort-header="type" role="button">Type</th>
+                        <th mat-sort-header="quantity_on_hand" role="button">Quantity</th>
+                        <th mat-sort-header="price" role="button">Price</th>
+                        <th mat-sort-header="inventory_value" role="button">Inventory Value</th>
+                        <th mat-sort-header="products_sold" role="button">Product Sold</th>
+                        <th mat-sort-header="sales_value" role="button">Sales Value</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let inventory of inventories$ | async">
+                        <td>{{ inventory.id }}</td>
+                        <td>{{ inventory.brand_name }}</td>
+                        <td>{{ inventory.type }}</td>
+                        <td>{{ inventory.quantity_on_hand }} pcs</td>
+                        <td>{{ inventory.price | currency }}</td>
+                        <td>{{ inventory.inventory_value | currency }}</td>
+                        <td>{{ inventory.products_sold }}</td>
+                        <td>{{ inventory.sales_value | currency }}</td>
+                        <td class="actions-cell">
+                            <button class="action-btn modify-btn" (click)="openModal(inventory)">
+                                <i class="fal fa-pencil"></i>
+                            </button>
+                            <button class="action-btn delete-btn" (click)="onDelete(inventory)">
+                                <i class="fal fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pagination-container d-flex justify-content-between align-items-center mt-3"
+                *ngIf="totalItems > 0">
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="itemsPerPage"
+                    [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="changePage($event)"
+                    aria-label="Pagination navigation" class="mb-0">
+                </ngb-pagination>
+                <div ngbDropdown class="page-size-selector">
+                    <button type="button" class="btn btn-warning" id="dropdownBasic1" ngbDropdownToggle
+                        [(ngModel)]="itemsPerPage">
+                        No. of items per page
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button *ngFor="let pageSize of [10, 20, 30]" ngbDropdownItem [value]="pageSize"
+                            (click)="changeItemsPerPage(pageSize)">
+                            {{ pageSize }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!(isLoading$ | async) && !inventories$" class="no-items-message py-5">
+                <i class="fas fa-box-open d-block mb-3"></i>
+                <p class="mb-1 fw-bold">No inventories found.</p>
+                <span class="suggestion">Try adding an item.</span>
+            </div>
+
+            <div *ngIf="isLoading$ | async" class="loading-inventories py-5">
+                <i class="fas fa-spinner fa-spin d-block mb-3"></i>
+                <p class="mb-0">Loading all inventories from database.</p>
+            </div>
         </div>
 
-        <div *ngIf="isLoading$ | async" class="loading-inventories">
-            <i class="fal fa-spinner"></i>
-            <p>Loading all inventories from database.</p>
-        </div>
     </div>
-
 </div>
