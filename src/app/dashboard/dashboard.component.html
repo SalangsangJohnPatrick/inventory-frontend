@@ -1,110 +1,184 @@
-<div class="inventory-container">
-    <header class="dashboard-header">
-        <h1>Dashboard</h1>
-        <p class="dashboard-subtitle">An overview of inventory, sales, and stock levels.</p>
-    </header>
+<div class="container-fluid p-4 bg-dark rounded-3 h-100">
 
-    <section class="summary-section">
-        <div class="inventory-type-selector">
-            <label for="inventoryType">Select Inventory Type:</label>
-            <select id="inventoryType" [(ngModel)]="inventoryType" (change)="onInventoryTypeChange(inventoryType)">
-                <option value="mouse">Mouse</option>
-                <option value="keyboard">Keyboard</option>
-                <option value="headset">Headset</option>
-                <option value="monitor">Monitor</option>
-                <option value="speaker">Speaker</option>
-            </select>
+    <div class="mb-4">
+        <!-- Dashboard Header -->
+        <header class="mb-4">
+            <h1 class="fs-4 fw-bold text-warning mb-1">Dashboard</h1>
+            <p class="text-light fs-6 mb-0">An overview of inventory, sales, and stock levels.</p>
+        </header>
+    </div>
+
+    <!-- Summary Section -->
+    <section class="mb-5">
+
+        <!-- Loading State -->
+        <div *ngIf="isLoadingValuation$ | async" class="loading-inventories py-5 bg-light rounded-3 text-center shadow-sm mb-4 mx-auto w-50 h-100">
+            <i class="fas fa-spinner fa-spin fa-3x d-block mb-3"></i>
+            <p class="fs-5 text-secondary mb-2">Loading valuation report for {{ inventoryType | titlecase }}.</p>
         </div>
 
-        <div *ngIf="isLoadingValuation" class="loading-inventory-valuation">
-            <i class="fal fa-spinner"></i>
-            <p>Loading valuation report for {{ inventoryType | titlecase }}.</p>
+        <!-- Empty State -->
+        <div *ngIf="!(isLoadingValuation$ | async) && (inventoryValuation$ | async)?.length === 0"
+            class="no-items-message py-5 bg-light rounded-3 text-center mb-4 mx-auto w-50 h-100">
+            <i class="fas fa-dolly-flatbed fa-2x d-block mb-3"></i>
+            <p class="fs-5 text-secondary mb-2">No valuation report found for {{ inventoryType | titlecase }}.</p>
+            <span class="suggestion fs-6">Try selecting a different inventory type.</span>
         </div>
 
-        <div *ngIf="!isLoadingValuation && items.length === 0" class="no-items-message">
-            <i class="fal fa-dolly-empty"></i>
-            <p>No valuation report found for {{ inventoryType | titlecase }}.</p>
-            <span class="suggestion">Try selecting a different inventory type.</span>
-        </div>
-
-        <div *ngIf="!isLoadingValuation && items.length > 0" class="summary-cards">
-            <div *ngFor="let item of items" class="summary-card">
-                <h3>Item Summary for {{ item.type | uppercase }}</h3>
-                <div class="metrics">
-                    <div class="metric">
-                        <span class="value">{{ item.totalQuantity }}</span>
-                        <span class="label">Quantity on Hand</span>
+        <!-- Summary Cards -->
+        <ng-container *ngIf="inventoryValuation$ | async as inventoryValuation">
+            <div *ngIf="!(isLoadingValuation$ | async) && inventoryValuation.length > 0">
+                <!-- Inventory Type Selector -->
+                <div class="bg-light p-3 rounded-3 shadow-sm d-flex align-items-center justify-content-between w-25">
+                    <label for="inventoryType" class="fw-medium me-3 mb-0">Select Inventory Type:</label>
+                    <select id="inventoryType" class="form-select form-select-sm border-secondary-subtle"
+                        style="max-width: 150px;" [(ngModel)]="inventoryType"
+                        (change)="onInventoryTypeChange(inventoryType)">
+                        <option value="mouse">Mouse</option>
+                        <option value="keyboard">Keyboard</option>
+                        <option value="headset">Headset</option>
+                        <option value="monitor">Monitor</option>
+                        <option value="speaker">Speaker</option>
+                    </select>
+                </div>
+                <div class="row mb-4 d-flex align-items-center justify-content-around">
+                    <!-- Item Summary Cards -->
+                    <div *ngFor="let item of inventoryValuation$ | async" class="col-12 col-lg-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-header bg-light py-3 border-bottom-0">
+                                <h3 class="card-title fs-6 fw-medium text-primary mb-0">Item Summary for {{ item.type |
+                                    uppercase }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <span class="fs-3 fw-bold text-dark">{{ item.totalQuantity }}</span>
+                                            <span class="text-secondary fs-6">Quantity on Hand</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <span class="fs-3 fw-bold text-dark">{{ item.totalInventoryValue | currency
+                                                }}</span>
+                                            <span class="text-secondary fs-6">Inventory Value</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="metric">
-                        <span class="value">{{ item.totalInventoryValue | currency }}</span>
-                        <span class="label">Inventory Value</span>
+
+                    <!-- Sales Overview Cards -->
+                    <div *ngFor="let item of inventoryValuation$ | async" class="col-12 col-lg-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-header bg-light py-3 border-bottom-0">
+                                <h3 class="card-title fs-6 fw-medium text-primary mb-0">Sales Overview for {{ item.type
+                                    |
+                                    uppercase }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <span class="fs-3 fw-bold text-dark">{{ item.totalProductsSold }}</span>
+                                            <span class="text-secondary fs-6">Total Sold Items</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex flex-column">
+                                            <span class="fs-3 fw-bold text-dark">{{ item.totalSalesValue | currency
+                                                }}</span>
+                                            <span class="text-secondary fs-6">Total Sale Value</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div *ngFor="let item of items" class="summary-card">
-                <h3>Sales Overview for {{ item.type | uppercase }}</h3>
-                <div class="metrics">
-                    <div class="metric">
-                        <span class="value">{{ item.totalProductsSold }}</span>
-                        <span class="label">Total Sold Items</span>
-                    </div>
-                    <div class="metric">
-                        <span class="value">{{ item.totalSalesValue | currency }}</span>
-                        <span class="label">Total Sale Value</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </ng-container>
     </section>
 
-    <header class="dashboard-header">
-        <p class="dashboard-subtitle">A comprehensive view of top-selling products and low stock alerts</p>
+    <!-- Subtitle Header -->
+    <header class="mb-4">
+        <p class="text-light fs-6 mb-0">A comprehensive view of top-selling products and low stock alerts</p>
     </header>
 
-    <section class="bottom-section">
-        <div class="top-selling-products">
-            <h3>Top Selling Products</h3>
+    <!-- Bottom Section -->
+    <section class="row g-4">
+        <!-- Top Selling Products -->
+        <div class="col-12 col-lg-6 h-100">
+            <div class="card h-75 shadow-sm border-0">
+                <div class="card-header bg-light py-3">
+                    <h3 class="card-title fs-6 fw-medium text-primary mb-0">Top Selling Products</h3>
+                </div>
 
-            <ul *ngIf="isLoadingTopProducts" class="loading-product-list">
-                <i class="fal fa-spinner"></i>
-                <p>Loading top-selling products.</p>
-            </ul>
+                <!-- Loading State -->
+                <div *ngIf="isLoading$ | async" class="loading-inventories py-5 rounded-3 text-center mb-4 mx-auto w-50">
+                    <i class="fas fa-spinner fa-spin fa-3x d-block mb-3"></i>
+                    <p class="fs-5 text-secondary mb-2">Loading top-selling products.</p>
+                </div>
 
-            <ul *ngIf="!isLoadingTopProducts" class="product-list">
-                <li *ngFor="let product of topProducts">
-                    <span class="product-name">{{ product.brand_name }}</span>
-                    <span class="sold-quantity">{{ product.products_sold }} units sold</span>
-                    <span class="sold-value">{{ product.sales_value | currency }}</span>
-                </li>
-            </ul>
-            <div *ngIf="!isLoadingTopProducts && topProducts.length === 0" class="no-items-message">
-                <i class="fal fa-dolly-empty"></i>
-                <p>No top-selling products found.</p>
+                <ng-container *ngIf="topSellingInventories$ | async as topSellingInventories">
+                    <!-- Product List -->
+                    <ul *ngIf="!(isLoading$ | async) && topSellingInventories.length > 0"
+                        class="list-group list-group-flush">
+                        <li *ngFor="let product of topSellingInventories"
+                            class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-medium">{{ product.brand_name }}</span>
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="text-secondary">{{ product.products_sold }} units sold</span>
+                                <span class="fw-semibold">{{ product.sales_value | currency }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+
+                <!-- Empty State -->
+                <div *ngIf="!(isLoading$ | async) && (topSellingInventories$ | async)?.length === 0" class="no-items-message py-5 rounded-3 text-center mb-4 mx-auto w-50">
+                    <i class="fas fa-dolly-flatbed fa-2x d-block mb-3"></i>
+                    <p class="fs-5 text-secondary mb-2">No top-selling products found.</p>
+                </div>
             </div>
         </div>
 
-        <div class="low-stock-alerts">
-            <div class="low-stock-header">
-                <h3>Low Stock Alerts</h3>
-                <span *ngIf="!isLoadingLowStockItems" class="threshold">Threshold: {{ threshold }} units</span>
-            </div>
+        <!-- Low Stock Alerts -->
+        <div class="col-12 col-lg-6 h-100">
+            <div class="card h-75 shadow-sm border-0">
+                <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+                    <h3 class="card-title fs-6 fw-medium text-primary mb-0">Low Stock Alerts</h3>
+                    <span *ngIf="!(isLoading$ | async)" class="badge bg-warning text-dark">Threshold: {{ threshold }}
+                        units</span>
+                </div>
 
-            <ul *ngIf="isLoadingLowStockItems" class="loading-alert-list">
-                <i class="fal fa-spinner"></i>
-                <p>Loading low stock items.</p>
-            </ul>
+                <!-- Loading State -->
+                <div *ngIf="isLoading$ | async" class="loading-inventories py-5 rounded-3 text-center mb-4 mx-auto w-50">
+                    <i class="fas fa-spinner fa-spin fa-3x d-block mb-3"></i>
+                    <p class="fs-5 text-secondary mb-2">Loading low stock items.</p>
+                </div>
 
-            <ul *ngIf="!isLoadingLowStockItems" class="alert-list">
-                <li *ngFor="let item of lowStockItems" class="alert-item">
-                    <span class="product-name">{{ item.brand_name }}</span>
-                    <span class="product-type">{{ item.type }}</span>
-                    <span class="current-stock">{{ item.quantity_on_hand }} units remaining</span>
-                </li>
-            </ul>
-            <div *ngIf="!isLoadingLowStockItems && lowStockItems.length === 0" class="no-items-message">
-                <i class="fal fa-dolly-empty"></i>
-                <p>No low stock items found.</p>
+                <ng-container *ngIf="lowStockInventories$ | async as lowStockInventories">
+                    <!-- Alert List -->
+                    <ul *ngIf="!(isLoading$ | async) && lowStockInventories.length > 0"
+                        class="list-group list-group-flush">
+                        <li *ngFor="let item of lowStockInventories"
+                            class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <div>
+                                <span class="fw-medium me-2">{{ item.brand_name }}</span>
+                                <span class="badge bg-light text-dark border">{{ item.type }}</span>
+                            </div>
+                            <span class="text-danger fw-medium">{{ item.quantity_on_hand }} units remaining</span>
+                        </li>
+                    </ul>
+                </ng-container>
+
+                <!-- Empty State -->
+                <div *ngIf="!(isLoading$ | async) && (lowStockInventories$ | async)?.length === 0" class="no-items-message py-5 rounded-3 text-center mb-4 mx-auto w-50">
+                    <i class="fas fa-dolly-flatbed fa-2x d-block mb-3"></i>
+                    <p class="fs-5 text-secondary mb-2">No low stock items found.</p>
+                </div>
             </div>
         </div>
     </section>

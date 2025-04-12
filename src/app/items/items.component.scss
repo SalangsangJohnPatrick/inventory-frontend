@@ -4,36 +4,6 @@ $amazon-light-grey: #F7F7F7;
 $amazon-black: #000000;
 $amazon-blue: #146EB4;
 
-body {
-    background-color: $amazon-light-grey;
-    font-family: Arial, sans-serif;
-}
-
-.inventory-container {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 20px;
-}
-
-.header h1 {
-    color: $amazon-dark-grey;
-    font-weight: 600;
-}
-
-.subtitle {
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.actions-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .search-container {
     position: relative;
     flex-grow: 1;
@@ -86,26 +56,17 @@ body {
 }
 
 .table th {
-    background-color: $amazon-dark-grey;
+    background-color: $amazon-blue;
     color: white;
     cursor: pointer;
 }
 
 .table th:hover {
-    background-color: #2d3b4e;
-}
-
-.no-items-message,
-.loading-inventories {
-    text-align: center;
-    padding: 30px;
-    color: #666;
+    background-color: #3793da;
 }
 
 .no-items-message i,
 .loading-inventories i {
-    font-size: 48px;
-    margin-bottom: 15px;
     color: $amazon-yellow;
 }
 

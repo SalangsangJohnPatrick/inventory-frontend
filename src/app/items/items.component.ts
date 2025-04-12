@@ -27,7 +27,7 @@ export class ItemsComponent implements OnInit {
   sortOrder: 'ASC' | 'DESC' | '' = 'ASC';
 
   currentPage = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 20;
   totalItems = 0;
 
   filterForm: FormGroup;

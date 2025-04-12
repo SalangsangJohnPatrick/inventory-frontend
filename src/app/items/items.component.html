@@ -1,61 +1,66 @@
-<div class="container-fluid">
-    <div class="inventory-container">
-        <div class="header">
-            <h1>All Items</h1>
-            <p class="subtitle">Item detail Information</p>
+<div class="container-fluid p-4 bg-dark rounded-3 min-vh-100">
+    <div class="header">
+        <h1 class="fs-4 fw-bold text-warning mb-1">All Items</h1>
+        <p class="text-light fs-6 mb-4">Item detail Information</p>
+    </div>
+
+    <div class="d-flex justify-content-between mb-4">
+        <div class="search-container">
+            <i class="fal fa-search search-icon"></i>
+            <input type="text" placeholder="Search Item" class="rounded-3 w-100 py-2 px-5 border-0" (input)="onSearch($event)">
         </div>
 
-        <div class="actions-bar">
-            <div class="search-container">
-                <i class="fal fa-search search-icon"></i>
-                <input type="text" placeholder="Search Item" class="search-input" (input)="onSearch($event)">
-            </div>
-
-            <div class="button-group">
-                <div ngbDropdown class="d-inline-block position-relative">
-                    <button type="button" id="dropdownBasic1" ngbDropdownToggle class="btn btn-outline-primary d-flex align-items-center gap-2 shadow-sm">
-                        <i class="fas fa-filter"></i> <span>Filter</span>
-                    </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="p-3 shadow-lg border-0 rounded-3">
-                        <h6 class="dropdown-header border-bottom pb-2 mb-3">Filter Options</h6>
-                        <form [formGroup]="filterForm" (ngSubmit)="onFilter()">
-                            <div class="form-group mb-3">
-                                <div class="form-group mb-3">
-                                    <label for="brandSelect" class="form-label fw-medium text-secondary">Brand Selection</label>
-                                    <select id="brandSelect" class="form-select" formControlName="brand_name" *ngIf="inventoriesDropdown$ | async as inventories">
-                                        <option *ngFor="let item of inventories" [value]="item.id">
-                                            {{ item.id }} - {{ item.brand_name }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="typeSelect" class="form-label fw-medium text-secondary">Type Selection</label>
-                                    <select id="typeSelect" class="form-select" formControlName="type">
-                                        <option value="Keyboard">Keyboard</option>
-                                        <option value="Mouse">Mouse</option>
-                                        <option value="Monitor">Monitor</option>
-                                    </select>
-                                </div>
-                                <div class="d-flex justify-content-end gap-2 mt-4 pt-2 border-top">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onClearFilter()">
-                                    <i class="fas fa-times me-1"></i> Clear
-                                    </button>
-                                    <button type="submit" class="btn btn-sm btn-success">
-                                    <i class="fas fa-check me-1"></i> Apply
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <button (click)="openModal()" class="btn add-btn">
-                    <i class="fal fa-plus"></i> Add Item
+        <div class="button-group">
+            <div ngbDropdown class="d-inline-block position-relative">
+                <button type="button" id="dropdownBasic1" ngbDropdownToggle
+                    class="btn btn-primary d-flex align-items-center gap-2 shadow-sm">
+                    <i class="fas fa-filter"></i> <span>Filter</span>
                 </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="p-3 shadow-lg border-0 rounded-3">
+                    <h6 class="dropdown-header border-bottom pb-2 mb-3">Filter Options</h6>
+                    <form [formGroup]="filterForm" (ngSubmit)="onFilter()">
+                        <div class="form-group mb-3">
+                            <div class="form-group mb-3">
+                                <label for="brandSelect" class="form-label fw-medium text-secondary">Brand
+                                    Selection</label>
+                                <select id="brandSelect" class="form-select" formControlName="brand_name"
+                                    *ngIf="inventoriesDropdown$ | async as inventories">
+                                    <option *ngFor="let item of inventories" [value]="item.id">
+                                        {{ item.id }} - {{ item.brand_name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="typeSelect" class="form-label fw-medium text-secondary">Type
+                                    Selection</label>
+                                <select id="typeSelect" class="form-select" formControlName="type">
+                                    <option value="Keyboard">Keyboard</option>
+                                    <option value="Mouse">Mouse</option>
+                                    <option value="Monitor">Monitor</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2 mt-4 pt-2 border-top">
+                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    (click)="onClearFilter()">
+                                    <i class="fas fa-times me-1"></i> Clear
+                                </button>
+                                <button type="submit" class="btn btn-sm btn-success">
+                                    <i class="fas fa-check me-1"></i> Apply
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
+            <button (click)="openModal()" class="btn add-btn">
+                <i class="fal fa-plus"></i> Add Item
+            </button>
         </div>
+    </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle border" *ngIf="!(isLoading$ | async) && inventories$" matSort
+    <div class="table-responsive">
+        <ng-container *ngIf="inventories$ | async as inventories">
+            <table class="table table-hover table-striped align-middle border-0" *ngIf="!(isLoading$ | async) && inventories.length > 0" matSort
                 (matSortChange)="onSort($event)">
                 <thead>
                     <tr>
@@ -91,38 +96,37 @@
                     </tr>
                 </tbody>
             </table>
+        </ng-container>
 
-            <div class="pagination-container d-flex justify-content-between align-items-center mt-3"
-                *ngIf="totalItems > 0">
-                <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="itemsPerPage"
-                    [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="changePage($event)"
-                    aria-label="Pagination navigation" class="mb-0">
-                </ngb-pagination>
-                <div ngbDropdown class="page-size-selector">
-                    <button type="button" class="btn btn-warning" id="dropdownBasic1" ngbDropdownToggle
-                        [(ngModel)]="itemsPerPage">
-                        No. of items per page
+        <div class="pagination-container d-flex justify-content-between align-items-center mt-3" *ngIf="totalItems > 0">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="currentPage" [pageSize]="itemsPerPage" [maxSize]="5"
+                [rotate]="true" [boundaryLinks]="true" (pageChange)="changePage($event)"
+                aria-label="Pagination navigation" class="mb-0">
+            </ngb-pagination>
+            <div ngbDropdown class="page-size-selector">
+                <button type="button" class="btn btn-warning" id="dropdownBasic1" ngbDropdownToggle
+                    [(ngModel)]="itemsPerPage">
+                    No. of items per page
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button *ngFor="let pageSize of [10, 20, 30]" ngbDropdownItem [value]="pageSize"
+                        (click)="changeItemsPerPage(pageSize)">
+                        {{ pageSize }}
                     </button>
-                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                        <button *ngFor="let pageSize of [10, 20, 30]" ngbDropdownItem [value]="pageSize"
-                            (click)="changeItemsPerPage(pageSize)">
-                            {{ pageSize }}
-                        </button>
-                    </div>
                 </div>
-            </div>
-
-            <div *ngIf="!(isLoading$ | async) && !inventories$" class="no-items-message py-5">
-                <i class="fas fa-box-open d-block mb-3"></i>
-                <p class="mb-1 fw-bold">No inventories found.</p>
-                <span class="suggestion">Try adding an item.</span>
-            </div>
-
-            <div *ngIf="isLoading$ | async" class="loading-inventories py-5">
-                <i class="fas fa-spinner fa-spin d-block mb-3"></i>
-                <p class="mb-0">Loading all inventories from database.</p>
             </div>
         </div>
 
+        <div *ngIf="!(isLoading$ | async) && (inventories$ | async)?.length === 0" class="no-items-message bg-light py-5 rounded-3 text-center shadow-sm mb-4 mx-auto w-25 position-absolute top-50 start-50 translate-middle">
+            <i class="fas fa-dolly-flatbed fa-2x d-block mb-3"></i>
+            <p class="mb-1 fs-5 text-secondary">No inventories found.</p>
+            <span class="suggestion fs-6">Try adding an item.</span>
+        </div>
+
+        <div *ngIf="isLoading$ | async" class="loading-inventories bg-light py-5 rounded-3 text-center mx-auto w-25 position-absolute top-50 start-50 translate-middle">
+            <i class="fas fa-spinner fa-spin fa-3x d-block mb-3"></i>
+            <p class="fs-5 mb-2 text-secondary">Loading all inventories from database.</p>
+        </div>
     </div>
+
 </div>

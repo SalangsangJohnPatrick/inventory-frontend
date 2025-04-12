@@ -14,3 +14,11 @@ export interface Filter {
     brand_name: string | null;
     type: string | null;
 }
+
+export interface InventoryValuation {
+  type: string;
+  totalQuantity: number;
+  totalInventoryValue: number;
+  totalProductsSold: number;
+  totalSalesValue: number;
+}

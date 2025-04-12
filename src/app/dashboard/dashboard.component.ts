@@ -1,25 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryApiService } from '../inventory-api/inventory-api.service';
-
-interface InventoryItem {
-  type: string;
-  totalQuantity: number;
-  totalInventoryValue: number;
-  totalProductsSold: number;
-  totalSalesValue: number;
-}
-
-interface TopProducts {
-  brand_name: string;
-  products_sold: number;
-  sales_value: number;
-}
-
-interface LowStock {
-  brand_name: string;
-  type: string;
-  quantity_on_hand: number;
-}
+import { InventoryItem, InventoryValuation } from '../types/inventory.type';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,72 +10,62 @@ interface LowStock {
 })
 export class DashboardComponent implements OnInit {
 
-  items: InventoryItem[] = [];
-  topProducts: TopProducts[] = [];
-  lowStockItems: LowStock[] = [];
+  inventoryValuation$: Observable<InventoryValuation[]> = new Observable<InventoryValuation[]>();
+  lowStockInventories$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
+  topSellingInventories$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
 
-  isLoadingValuation: boolean = true;
-  isLoadingTopProducts: boolean = true;
-  isLoadingLowStockItems: boolean = true;
+  isLoading$: Observable<Boolean> = new Observable<Boolean>();
+  isLoadingValuation$: Observable<Boolean> = new Observable<Boolean>();
 
-  threshold: number = 0;
+  threshold: number = 100;
   inventoryType: string = 'mouse';
 
   constructor(private inventoryApiService: InventoryApiService) { }
 
   ngOnInit(): void {
+    this.isLoading$ = this.inventoryApiService.isLoading$;
+    this.isLoadingValuation$ = this.inventoryApiService.isLoadingValuation$;
+    this.inventoryValuation$ = this.inventoryApiService.inventoryValuation$;
+    this.lowStockInventories$ = this.inventoryApiService.lowStockInventories$;
+    this.topSellingInventories$ = this.inventoryApiService.topSellingInventories$;
+
     this.getInventoryValuationReport();
     this.getTopSellingProducts();
     this.getLowStockItems();
   }
 
-  // Method to fetch the inventory valuation report based on the selected type
   getInventoryValuationReport() {
-    this.inventoryApiService.getValuationReportByType(this.inventoryType)
-      .subscribe((data: any) => {
-        this.items = Array.isArray(data) ? data : [data];
-        this.isLoadingValuation = false;
-      }, error => {
-        console.error('Error fetching inventory data:', error);
-        this.items = [];
-        this.isLoadingValuation = false;
-      });
+    this.inventoryApiService.getValuationReportByType(this.inventoryType).subscribe({
+      next: () => {},
+      error: (error) => {
+        console.error('Failed to load:', error);
+      }
+    });;
   }
 
-  // Method to change the inventory type and fetch new data
   onInventoryTypeChange(type: string) {
     this.inventoryType = type;
-    this.getInventoryValuationReport(); // Fetch the data for the new type
+    this.getInventoryValuationReport();
   }
 
-  // Fetch top-selling products from API
   getTopSellingProducts() {
-    this.inventoryApiService.getTopSellingProducts()
-      .subscribe((data: any) => {
-        this.topProducts = Array.isArray(data) ? data : [];
-        this.isLoadingTopProducts = false;
-      }, error => {
-        console.error('Error fetching top-selling products:', error);
-        this.topProducts = [];
-        this.isLoadingTopProducts = false;
-      });
+    this.inventoryApiService.getTopSellingProducts().subscribe({
+      next: () => {},
+      error: (error) => {
+        console.error('Failed to load:', error);
+      }
+    });
   }
 
-  // Fetch low-stock items from API
   getLowStockItems() {
-    this.inventoryApiService.getLowStockItems()
-      .subscribe((data: any) => {
-        // Extract lowStockItems from the response
-        this.lowStockItems = data.lowStockItems || []; // Safely extract lowStockItems if present
+    this.inventoryApiService.getLowStockItems().subscribe({
+      next: (data: any) => {
         this.threshold = data.threshold;
-        this.isLoadingLowStockItems = false;
-
-      }, error => {
-        console.error('Error fetching low-stock items:', error);
-        this.lowStockItems = [];
-        this.threshold = 0;
-        this.isLoadingLowStockItems = false;
-      });
+      },
+      error: (error) => {
+        console.error('Failed to load:', error);
+      }
+    });
   }
 
 }
