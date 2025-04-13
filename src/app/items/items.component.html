@@ -79,7 +79,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let inventory of inventories$ | async">
+                    <tr *ngFor="let inventory of inventories">
                         <td>{{ inventory.id }}</td>
                         <td>{{ inventory.brand_name }}</td>
                         <td>{{ inventory.type }}</td>
@@ -99,6 +99,17 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div *ngIf="!(isLoading$ | async) && inventories.length === 0" class="no-items-message bg-light py-5 rounded-3 text-center shadow-sm mb-4 mx-auto w-25 position-absolute top-50 start-50 translate-middle">
+                <i class="fas fa-dolly-flatbed fa-2x d-block mb-3"></i>
+                <p class="mb-1 fs-5 text-secondary">No inventories found.</p>
+                <span class="suggestion fs-6">Try adding an item.</span>
+            </div>
+    
+            <div *ngIf="isLoading$ | async" class="loading-inventories bg-light py-5 rounded-3 text-center mx-auto w-25 position-absolute top-50 start-50 translate-middle">
+                <i class="fas fa-spinner fa-spin fa-3x d-block mb-3"></i>
+                <p class="fs-5 mb-2 text-secondary">Loading all inventories from database.</p>
+            </div>
         </ng-container>
 
         <div class="pagination-container d-flex justify-content-between align-items-center mt-3" *ngIf="totalItems > 0">
@@ -119,17 +130,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-
-        <div *ngIf="!(isLoading$ | async) && (inventories$ | async)?.length === 0" class="no-items-message bg-light py-5 rounded-3 text-center shadow-sm mb-4 mx-auto w-25 position-absolute top-50 start-50 translate-middle">
-            <i class="fas fa-dolly-flatbed fa-2x d-block mb-3"></i>
-            <p class="mb-1 fs-5 text-secondary">No inventories found.</p>
-            <span class="suggestion fs-6">Try adding an item.</span>
-        </div>
-
-        <div *ngIf="isLoading$ | async" class="loading-inventories bg-light py-5 rounded-3 text-center mx-auto w-25 position-absolute top-50 start-50 translate-middle">
-            <i class="fas fa-spinner fa-spin fa-3x d-block mb-3"></i>
-            <p class="fs-5 mb-2 text-secondary">Loading all inventories from database.</p>
         </div>
     </div>
 

@@ -74,7 +74,7 @@ export class InventoryApiService {
       .pipe(
         catchError((error: any) => {
           console.error('Failed to fetch dropdown data', error);
-          return of(null); // Return a null value to indicate failure
+          return of(null);
         })
       )
       .subscribe((data: Filter | null) => {
