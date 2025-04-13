@@ -10,9 +10,8 @@ export interface InventoryItem {
 }
 
 export interface Filter {
-    id: number | null;
-    brand_name: string | null;
-    type: string | null;
+    brand_names: string[];
+    types: string[];
 }
 
 export interface InventoryValuation {

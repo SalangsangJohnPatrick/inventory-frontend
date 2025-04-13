@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, finalize, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, map, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Filter, InventoryItem, InventoryValuation } from '../types/inventory.type';
 
@@ -12,7 +12,7 @@ export class InventoryApiService {
   private _inventoryValuation: BehaviorSubject<InventoryValuation[]> = new BehaviorSubject<InventoryValuation[]>([]);
   private _topSellingInventories: BehaviorSubject<InventoryItem[]> = new BehaviorSubject<InventoryItem[]>([]);
   private _lowStockInventories: BehaviorSubject<InventoryItem[]> = new BehaviorSubject<InventoryItem[]>([]);
-  private _inventoriesDropdown: BehaviorSubject<InventoryItem[]> = new BehaviorSubject<InventoryItem[]>([]);
+  private _inventoriesDropdown: BehaviorSubject<Filter> = new BehaviorSubject<Filter>({ brand_names: [], types: [] });
   private _isLoading: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(true);
   private _isLoadingValuation: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(true);
 
@@ -32,7 +32,7 @@ export class InventoryApiService {
     return this._lowStockInventories.asObservable();
   }
 
-  get inventoriesDropdown$(): Observable<InventoryItem[]> {
+  get inventoriesDropdown$(): Observable<Filter> {
     return this._inventoriesDropdown.asObservable();
   }
 
@@ -70,9 +70,17 @@ export class InventoryApiService {
   }
 
   getInventoryDropdown(): void {
-    this.http.get<InventoryItem[]>('http://localhost:8000/GetInventoryDropdown')
-      .subscribe((data: InventoryItem[]) => {
-        this._inventoriesDropdown.next(data);
+    this.http.get<Filter>('http://localhost:8000/GetInventoryDropdown')
+      .pipe(
+        catchError((error: any) => {
+          console.error('Failed to fetch dropdown data', error);
+          return of(null); // Return a null value to indicate failure
+        })
+      )
+      .subscribe((data: Filter | null) => {
+        if (data) {
+          this._inventoriesDropdown.next(data);
+        }
       });
   }
 

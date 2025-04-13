@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryApiService } from '../inventory-api/inventory-api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateUpdateModalComponent } from '../create-update-modal/create-update-modal.component';
-import { InventoryItem } from '../types/inventory.type';
+import { Filter, InventoryItem } from '../types/inventory.type';
 import Swal from 'sweetalert2';
 import { Sort } from '@angular/material/sort';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -20,7 +20,7 @@ export class ItemsComponent implements OnInit {
 
   selectedItem: InventoryItem | null = null;
   inventories$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
-  inventoriesDropdown$: Observable<InventoryItem[]> = new Observable<InventoryItem[]>();
+  inventoriesDropdown$: Observable<Filter> = of({ brand_names: [], types: [] });
 
   search = '';
   sortField: string = 'id';
@@ -38,9 +38,8 @@ export class ItemsComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.filterForm = this.formBuilder.group({
-      id: [null],
-      brand_name: [null],
-      type: [null],
+      brand_name: [''],
+      type: [''],
     })
   }
 
@@ -86,9 +85,10 @@ export class ItemsComponent implements OnInit {
   }
   
   onClearFilter() {
-    this.filterForm.reset();
+    this.filterForm.get('brand_name')?.setValue('');
+    this.filterForm.get('type')?.setValue('');
     this.getInventoryItems();
-  }  
+  }
 
   openModal(item: InventoryItem | null = null) {
     const modal = this._modal.open(CreateUpdateModalComponent, { backdrop: 'static', size: 'lg' });

@@ -4,7 +4,7 @@
         <!-- Dashboard Header -->
         <header class="mb-4">
             <h1 class="fs-4 fw-bold text-warning mb-1">Dashboard</h1>
-            <p class="text-light fs-6 mb-0">An overview of inventory, sales, and stock levels.</p>
+            <p class="text-light fs-6 fw-medium mb-0">An overview of inventory, sales, and stock levels.</p>
         </header>
     </div>
 
@@ -34,11 +34,14 @@
                     <select id="inventoryType" class="form-select form-select-sm border-secondary-subtle"
                         style="max-width: 150px;" [(ngModel)]="inventoryType"
                         (change)="onInventoryTypeChange(inventoryType)">
-                        <option value="mouse">Mouse</option>
-                        <option value="keyboard">Keyboard</option>
+                        <!-- ['Laptop', 'Monitor', 'Keyboard', 'Mouse', 'Printer', 'Gaming Headset', 'Controller'] -->
                         <option value="laptop">Laptop</option>
                         <option value="monitor">Monitor</option>
+                        <option value="keyboard">Keyboard</option>
+                        <option value="mouse">Mouse</option>
                         <option value="printer">Printer</option>
+                        <option value="gamingHeadset">Gaming Headset</option>
+                        <option value="controller">Controller</option>
                     </select>
                 </div>
                 <div class="row mb-4 d-flex align-items-center justify-content-around">
@@ -103,7 +106,7 @@
 
     <!-- Subtitle Header -->
     <header class="mb-4">
-        <p class="text-light fs-6 mb-0">A comprehensive view of top-selling products and low stock alerts</p>
+        <p class="text-light fs-6 fw-medium mb-0">A comprehensive view of top-selling products and low stock alerts.</p>
     </header>
 
     <!-- Bottom Section -->

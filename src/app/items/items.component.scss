@@ -97,8 +97,6 @@ ngb-pagination .page-link {
     gap: 10px;
 }
 
-.page-size-selector select {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
+.dropdown-select {
+    min-width: 15px;
 }
