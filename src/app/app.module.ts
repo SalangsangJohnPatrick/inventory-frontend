@@ -15,6 +15,10 @@ import { CreateUpdateModalComponent } from './create-update-modal/create-update-
 import { NgbDropdownModule, NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { AuthInterceptor } from './auth-service/auth.interceptor';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,8 @@ import { MatIconModule } from '@angular/material/icon';
     SidebarComponent,
     ItemsComponent,
     ImportComponent,
-    CreateUpdateModalComponent
+    CreateUpdateModalComponent,
+    AuthenticationComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +44,13 @@ import { MatIconModule } from '@angular/material/icon';
     MatSortModule,
     MatIconModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass:  AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
