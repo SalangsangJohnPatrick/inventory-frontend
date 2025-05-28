@@ -7,6 +7,7 @@ export interface InventoryItem {
     inventory_value: number;
     products_sold: number;
     sales_value: number;
+    threshold: number;
 }
 
 export interface Filter {

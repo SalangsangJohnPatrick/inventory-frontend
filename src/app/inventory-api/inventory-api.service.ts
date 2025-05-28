@@ -128,14 +128,13 @@ export class InventoryApiService {
       )
   }
 
-  getLowStockItems(): Observable<InventoryItem[]> {
+  getLowStockItems(): Observable<{ data: InventoryItem[]; threshold: number }> {
     this._isLoading.next(true);
-    return this.http.get<{ data: InventoryItem[] }>('http://localhost:8000/GetLowStockItems')
+    return this.http.get<{ data: InventoryItem[], threshold: number }>('http://localhost:8000/GetLowStockItems')
       .pipe(
         tap(response => {
           this._lowStockInventories.next(response.data)
         }),
-        map(response => response.data),
         finalize(() => this._isLoading.next(false))
       )
   }

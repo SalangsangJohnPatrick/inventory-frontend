@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   isLoading$: Observable<Boolean> = new Observable<Boolean>();
   isLoadingValuation$: Observable<Boolean> = new Observable<Boolean>();
 
-  threshold: number = 100;
+  threshold: number = 0;
   inventoryType: string = 'mouse';
 
   constructor(private inventoryApiService: InventoryApiService) { }
@@ -59,8 +59,8 @@ export class DashboardComponent implements OnInit {
 
   getLowStockItems() {
     this.inventoryApiService.getLowStockItems().subscribe({
-      next: (data: any) => {
-        this.threshold = data.threshold;
+      next: (response) => {
+        this.threshold = response.threshold;
       },
       error: (error) => {
         console.error('Failed to load:', error);
