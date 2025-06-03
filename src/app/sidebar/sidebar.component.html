@@ -18,4 +18,12 @@
             </a>
         </li>
     </ul>
+
+    <!-- Logout Button -->
+    <div class="logout-container mt-auto p-3">
+        <button class="btn btn-danger w-100" (click)="onLogout()">
+            <i class="fas fa-sign-out-alt me-2"></i>
+            <span *ngIf="collapsed">Logout</span>
+        </button>
+    </div>
 </div>

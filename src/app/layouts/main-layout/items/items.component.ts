@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { InventoryApiService } from '../inventory-api/inventory-api.service';
+import { InventoryApiService } from '../../../inventory-api/inventory-api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CreateUpdateModalComponent } from '../create-update-modal/create-update-modal.component';
-import { Filter, InventoryItem } from '../types/inventory.type';
+import { CreateUpdateModalComponent } from '../../../create-update-modal/create-update-modal.component';
+import { Filter, InventoryItem } from '../../../types/inventory.type';
 import Swal from 'sweetalert2';
 import { Sort } from '@angular/material/sort';
 import { Observable, of } from 'rxjs';

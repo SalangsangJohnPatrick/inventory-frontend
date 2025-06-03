@@ -1,5 +1,7 @@
 import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 import { navbarData } from './nav-data';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth-service/auth-service.service';
 
 interface SidebarToggle {
   screenWidth: number;
@@ -11,7 +13,9 @@ interface SidebarToggle {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit{
+export class SidebarComponent implements OnInit {
+
+  constructor(private router: Router, private authService: AuthService) {}
 
   @HostListener('window:resize', ['$event'])
 
@@ -21,6 +25,12 @@ export class SidebarComponent implements OnInit{
       this.collapsed = false;
       this.onToggleSidebar.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
     }
+  }
+
+  // Logout method
+  onLogout(): void {
+    this.authService.logout();
+    this.router.navigate(['/authentication']);
   }
 
   ngOnInit(): void {

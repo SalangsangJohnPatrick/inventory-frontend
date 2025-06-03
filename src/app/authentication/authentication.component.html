@@ -1,29 +1,114 @@
-<div class="auth-container">
-  <h2>{{ isLoginMode ? 'Login' : 'Signup' }}</h2>
-
-  <form (ngSubmit)="onSubmit()" [formGroup]="authForm">
-    <div>
-      <label>Email</label>
-      <input type="email" formControlName="email" required />
+<!-- authentication.component.html -->
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100 py-4">
+  <div class="auth-container col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+    
+    <!-- Header Section -->
+    <div class="auth-header">
+      <h2 class="auth-title">{{ isLoginMode ? 'Login' : 'Sign Up' }}</h2>
+      <p class="auth-subtitle">
+        {{ isLoginMode ? 'Welcome back! Please sign in to your account' : 'Create your account to get started' }}
+      </p>
     </div>
+    
+    <!-- Form Section -->
+    <div class="auth-body">
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()" novalidate>
+        
+        <!-- Email Field -->
+        <div class="form-floating mb-3">
+          <input 
+            type="email" 
+            class="form-control"
+            [class.is-invalid]="authForm.get('email')?.invalid && authForm.get('email')?.touched"
+            id="email" 
+            formControlName="email"
+            placeholder="Enter your email" 
+            required>
+          <label for="email">
+            <i class="fas fa-envelope me-2"></i>Email Address
+          </label>
+          <div class="invalid-feedback" *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
+            Please enter a valid email address
+          </div>
+        </div>
 
-    <div>
-      <label>Password</label>
-      <input type="password" formControlName="password" required />
+        <!-- Password Field -->
+        <div class="form-floating mb-3">
+          <input 
+            type="password" 
+            class="form-control"
+            [class.is-invalid]="authForm.get('password')?.invalid && authForm.get('password')?.touched"
+            id="password" 
+            formControlName="password"
+            placeholder="Enter your password" 
+            required>
+          <label for="password">
+            <i class="fas fa-lock me-2"></i>Password
+          </label>
+          <div class="invalid-feedback" *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched">
+            Password is required
+          </div>
+        </div>
+
+        <!-- Name Field (Signup Only) -->
+        <div class="form-floating mb-3 name-field" 
+             [class.show]="!isLoginMode"
+             *ngIf="!isLoginMode">
+          <input 
+            type="text" 
+            class="form-control"
+            [class.is-invalid]="authForm.get('name')?.invalid && authForm.get('name')?.touched"
+            id="name" 
+            formControlName="name"
+            placeholder="Enter your full name"
+            [required]="!isLoginMode">
+          <label for="name">
+            <i class="fas fa-user me-2"></i>Full Name
+          </label>
+          <div class="invalid-feedback" *ngIf="authForm.get('name')?.invalid && authForm.get('name')?.touched">
+            Name is required
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2 mb-3">
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="authForm.invalid">
+            <span>{{ isLoginMode ? 'Sign In' : 'Create Account' }}</span>
+            <i class="fas" 
+               [class.fa-arrow-right]="isLoginMode"
+               [class.fa-rocket]="!isLoginMode"
+               [class.auth-icon]="true"></i>
+          </button>
+        </div>
+
+        <!-- Error Alert -->
+        <div class="alert alert-danger" 
+             *ngIf="error" 
+             role="alert">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          <span>{{ error }}</span>
+        </div>
+      </form>
+
+      <!-- Toggle Section -->
+      <div class="toggle-section">
+        <p class="toggle-text">
+          {{ isLoginMode ? "Don't have an account?" : 'Already have an account?' }}
+        </p>
+        <button 
+          type="button" 
+          class="btn btn-outline-secondary" 
+          (click)="toggleMode()">
+          <span>{{ isLoginMode ? 'Create Account' : 'Sign In' }}</span>
+          <i class="fas" 
+             [class.fa-user-plus]="isLoginMode"
+             [class.fa-sign-in-alt]="!isLoginMode"
+             [class.auth-icon]="true"></i>
+        </button>
+      </div>
     </div>
-
-    <div *ngIf="!isLoginMode">
-      <label>Name</label>
-      <input type="text" formControlName="name" required />
-    </div>
-
-    <button type="submit">{{ isLoginMode ? 'Login' : 'Signup' }}</button>
-    <button type="button" (click)="toggleMode()">
-      Switch to {{ isLoginMode ? 'Signup' : 'Login' }}
-    </button>
-  </form>
-
-  <div *ngIf="error" class="error">
-    {{ error }}
   </div>
 </div>

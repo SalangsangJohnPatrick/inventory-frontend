@@ -1,0 +1,334 @@
+// authentication.component.scss
+
+// Amazon Color Palette
+$amazon-yellow: #FF9900;
+$amazon-dark-grey: #232F3E;
+$amazon-light-grey: #F7F7F7;
+$amazon-black: #000000;
+$amazon-blue: #146EB4;
+
+// Additional supporting colors
+$error-red: #dc3545;
+$success-green: #28a745;
+$warning-yellow: #ffc107;
+
+:host {
+  display: block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// Main container background
+.container-fluid {
+  background: linear-gradient(135deg, $amazon-light-grey 0%, darken($amazon-light-grey, 8%) 100%);
+  min-height: 100vh;
+}
+
+// Auth card container
+.auth-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba($amazon-dark-grey, 0.1);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 25px 50px rgba($amazon-dark-grey, 0.15);
+  }
+}
+
+// Header styling
+.auth-header {
+  background: $amazon-dark-grey;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $amazon-yellow, $amazon-blue);
+  }
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.auth-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+// Form body
+.auth-body {
+  padding: 2.5rem;
+}
+
+// Form controls
+.form-floating {
+  margin-bottom: 1.5rem;
+
+  > .form-control {
+    border: 2px solid $amazon-light-grey;
+    border-radius: 12px;
+    padding: 1.25rem 0.75rem 0.75rem;
+    height: 65px;
+    transition: all 0.3s ease;
+    background: rgba($amazon-light-grey, 0.3);
+    font-size: 1rem;
+
+    &:focus {
+      border-color: $amazon-blue;
+      box-shadow: 0 0 0 0.2rem rgba($amazon-blue, 0.15);
+      background: white;
+      outline: none;
+    }
+
+    &.is-invalid {
+      border-color: $error-red;
+      
+      &:focus {
+        border-color: $error-red;
+        box-shadow: 0 0 0 0.2rem rgba($error-red, 0.15);
+      }
+    }
+
+    &:valid:not(:placeholder-shown) {
+      border-color: $success-green;
+    }
+  }
+
+  > label {
+    color: $amazon-dark-grey;
+    font-weight: 500;
+    padding: 1rem 0.75rem;
+
+    i {
+      color: $amazon-blue;
+    }
+  }
+}
+
+// Name field animation
+.name-field {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-10px);
+  margin-bottom: 0 !important;
+
+  &.show {
+    opacity: 1;
+    max-height: 100px;
+    transform: translateY(0);
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+// Primary button styling
+.btn-primary {
+  background: linear-gradient(135deg, $amazon-blue, lighten($amazon-blue, 10%));
+  border: none;
+  border-radius: 12px;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba($amazon-blue, 0.3);
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, lighten($amazon-blue, 10%), $amazon-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba($amazon-blue, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: lighten($amazon-dark-grey, 30%);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .auth-icon {
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover:not(:disabled) .auth-icon {
+    transform: translateX(3px);
+  }
+}
+
+// Secondary button styling
+.btn-outline-secondary {
+  border: 2px solid $amazon-dark-grey;
+  color: $amazon-dark-grey;
+  border-radius: 12px;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background: transparent;
+
+  &:hover {
+    background: $amazon-dark-grey;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba($amazon-dark-grey, 0.2);
+  }
+
+  .auth-icon {
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .auth-icon {
+    transform: translateX(3px);
+  }
+}
+
+// Toggle section
+.toggle-section {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $amazon-light-grey;
+}
+
+.toggle-text {
+  color: $amazon-dark-grey;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+// Error alert styling
+.alert-danger {
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, lighten($error-red, 5%), $error-red);
+  color: white;
+  border-left: 4px solid darken($error-red, 10%);
+  animation: slideInDown 0.3s ease;
+  margin-bottom: 0;
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+// Form validation feedback
+.invalid-feedback {
+  display: block;
+  color: $error-red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+// Animations
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive design
+@media (max-width: 576px) {
+  .auth-container {
+    margin: 1rem;
+    border-radius: 12px;
+  }
+  
+  .auth-header {
+    padding: 1.5rem;
+  }
+  
+  .auth-body {
+    padding: 2rem 1.5rem;
+  }
+  
+  .auth-title {
+    font-size: 1.5rem;
+  }
+
+  .auth-subtitle {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .auth-body {
+    padding: 1.5rem 1rem;
+  }
+  
+  .form-floating > .form-control {
+    font-size: 0.9rem;
+  }
+  
+  .btn-primary,
+  .btn-outline-secondary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+// Focus states for accessibility
+.form-control:focus,
+.btn:focus {
+  outline: 2px solid $amazon-blue;
+  outline-offset: 2px;
+}
+
+// Loading state (if needed)
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

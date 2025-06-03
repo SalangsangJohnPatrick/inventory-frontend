@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { InventoryApiService } from '../inventory-api/inventory-api.service';
-import { InventoryItem, InventoryValuation } from '../types/inventory.type';
+import { InventoryApiService } from '../../../inventory-api/inventory-api.service';
+import { InventoryItem, InventoryValuation } from '../../../types/inventory.type';
 import { Observable } from 'rxjs';
 
 @Component({
