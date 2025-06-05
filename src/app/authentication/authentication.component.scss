@@ -45,16 +45,6 @@ $warning-yellow: #ffc107;
   padding: 2rem;
   text-align: center;
   position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, $amazon-yellow, $amazon-blue);
-  }
 }
 
 .auth-title {
@@ -85,7 +75,7 @@ $warning-yellow: #ffc107;
   > .form-control {
     border: 2px solid $amazon-light-grey;
     border-radius: 12px;
-    padding: 1.25rem 0.75rem 0.75rem;
+    padding: 1.5rem 0.75rem 0.75rem;
     height: 65px;
     transition: all 0.3s ease;
     background: rgba($amazon-light-grey, 0.3);

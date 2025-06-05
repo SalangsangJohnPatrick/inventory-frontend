@@ -4,6 +4,14 @@ $amazon-light-grey: #F7F7F7;
 $amazon-black: #000000;
 $amazon-blue: #146EB4;
 
+.title {
+    color: $amazon-yellow;
+}
+
+.badge {
+    background-color: $amazon-yellow;
+}
+
 .no-items-message i,
 .loading-inventories i {
     color: $amazon-yellow;

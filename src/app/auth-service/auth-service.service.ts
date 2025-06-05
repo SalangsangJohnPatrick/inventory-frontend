@@ -1,32 +1,55 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { Auth } from '../types/auth.type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8000';
+  private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.hasToken());
 
-  constructor(private http: HttpClient) {}
+  get isAuthenticated$(): Observable<boolean> {
+    return this._isAuthenticated.asObservable();
+  }
 
-  login(email: string, password: string) {
-    return this.http.post(`${this.baseUrl}/login`, { email, password }).pipe(
-      tap((res: any) => localStorage.setItem('token', res.token))
+  constructor(private http: HttpClient) { }
+
+  login(email: string, password: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, { email, password }).pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token);
+        this._isAuthenticated.next(true);
+      }),
+      catchError(error => {
+        this._isAuthenticated.next(false);
+        throw error;
+      })
     );
   }
 
-  signup(name: string, email: string, password: string) {
-    return this.http.post(`${this.baseUrl}/signup`, { name, email, password }).pipe(
-      tap((res: any) => localStorage.setItem('token', res.token))
+  signup(name: string, email: string, password: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.baseUrl}/signup`, { name, email, password }).pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token);
+        this._isAuthenticated.next(true);
+      }),
+      catchError(error => {
+        this._isAuthenticated.next(false);
+        throw error;
+      })
     );
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('token');
+    this._isAuthenticated.next(false);
   }
 
-  isAuthenticated(): boolean {
+  private hasToken(): boolean {
     return !!localStorage.getItem('token');
   }
+
 }

@@ -23,7 +23,8 @@ const routes: Routes = [
         component: ItemsComponent
       }
     ]
-  }
+  },
+  { path: '**', redirectTo: '/authentication' }
 ];
 
 @NgModule({

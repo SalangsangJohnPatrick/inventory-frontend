@@ -4,6 +4,10 @@ $amazon-light-grey: #F7F7F7;
 $amazon-black: #000000;
 $amazon-blue: #146EB4;
 
+.header h1 {
+    color: $amazon-yellow;
+}
+
 .search-container {
     position: relative;
     flex-grow: 1;
